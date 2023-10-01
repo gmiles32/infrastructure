@@ -1,0 +1,8 @@
+collections:
+  - name: ansible.posix
+  - name: community.docker
+
+roles: 
+  - src: grog.package
+  - src: geerlingguy.docker
+  # - src: ironicbadger.docker_compose_generator

@@ -1,0 +1,33 @@
+- name: Send Discord notification
+  community.general.discord:
+    webhook_id: "1141509935994249358"
+    webhook_token: "jWZyabmpOiyhmjdxr90ssNfzx8dh8gBp0e_l-Zn7p2buMMPG0xz9zLR1g-gudmI5es2c"
+    embeds:
+      - title: "🔁 Reboot initiated 🔁"
+        fields:
+          - name: "Server IP"
+            value: "{{ inventory_hostname }}"
+        timestamp: "{{ ansible_date_time.iso8601 }}"
+        color: 3447003
+
+- name: Reboot PVE
+  reboot:
+
+- name: Reset the connection
+  meta: reset_connection
+
+- name: Wait for pfsense to reload
+  wait_for_connection:
+    delay: 10
+
+- name: Send Discord notification
+  community.general.discord:
+    webhook_id: "1141509935994249358"
+    webhook_token: "jWZyabmpOiyhmjdxr90ssNfzx8dh8gBp0e_l-Zn7p2buMMPG0xz9zLR1g-gudmI5es2c"
+    embeds:
+      - title: "💚 Server up 💚"
+        fields:
+          - name: "Server IP"
+            value: "{{ inventory_hostname }}"
+        timestamp: "{{ ansible_date_time.iso8601 }}"
+        color: 5763719              

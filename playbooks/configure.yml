@@ -1,0 +1,10 @@
+- hosts: "{{ host }}"
+  vars_files:
+    - ../vars/vault.yml
+  roles:
+    - role: grog.package
+    - role: geerlingguy.docker
+    # - gmiles32.docker_firewalld
+    - role: docker_compose_generator
+      tags: compose
+    

@@ -1,0 +1,70 @@
+package_list:
+  - name: vim
+    dnf_ignore: yes
+  - name: rsync
+    dnf_ignore: yes
+  - name: net-tools
+    dnf_ignore: yes
+  - name: git
+    dnf_ignore: yes
+  - name: htop
+    dnf_ignore: yes
+  - name: firewalld
+    dnf_ignore: yes
+  - name: nfs
+    apt: nfs-commons
+    yum: nfs-utils
+    dnf_ignore: yes
+  - name: wget
+    dnf_ignore: yes
+  - name: wireguard
+    dnf: wireguard-tools
+    yum_ignore: yes
+    
+package_update_cache: yes
+
+# 
+docker_compose_generator_output_path: /home/sysadmin/tmp
+appdata_path: /opt/appdata
+containers:
+  - service_name: traefik
+    active: true
+    image: traefik
+    container_name: tr
+    ports:
+      - 80:80
+      - 443:443
+      #- 8080:8080
+    command:
+      - --log.level=debug
+      - --accesslog=false
+      - --api.insecure=false
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - "--certificatesresolvers.cloudflare.acme.email="
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+      - --serversTransport.insecureSkipVerify=true
+    volumes:
+      - "{{ appdata_path }}/traefik/letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    environment:
+      #- "CLOUDFLARE_EMAIL={{ cloudflare_account_email }}"
+      - "CF_ZONE_API_TOKEN="
+      - "CF_DNS_API_TOKEN="
+    restart: unless-stopped
+###
+  - service_name: nginx
+    active: true
+    image: nginx
+    labels:
+        - traefik.enable=true
+        - traefik.http.routers.nginx.rule=Host(`banana.test.badgersbits.io`)
+        - traefik.http.routers.nginx.tls.certresolver=cloudflare
+    restart: unless-stopped
+
