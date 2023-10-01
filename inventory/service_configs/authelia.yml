@@ -26,7 +26,7 @@ containers:
       - "AUTHELIA_STORAGE_ENCRYPTION_KEY={{ authelia_storage_encryption_key }}"
       - "AUTHELIA_DUO_API_INTEGRATION_KEY={{ authelia_duo_api_integration_key }}"
       - "AUTHELIA_DUO_API_SECRET_KEY={{ authelia_duo_api_secret_key }}"
-      - "AUTHELIA_NOTIFIER_SMTP_PASSWORD={{ smtp_password }}"
+      # - "AUTHELIA_NOTIFIER_SMTP_PASSWORD={{ smtp_password }}"
 
 networks:
   - network_name: frontend

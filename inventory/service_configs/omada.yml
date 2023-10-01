@@ -30,11 +30,9 @@ containers:
       - SSL_KEY_NAME=tls.key
       - TZ=America/Boise
     volumes:
-      - omada-data:/opt/tplink/EAPController/data
-      - omada-logs:/opt/tplink/EAPController/logs
+      - ./data:/opt/tplink/EAPController/data
+      - ./logs:/opt/tplink/EAPController/logs
 
 networks: []
 
-volumes:
-  - volume_name: omada-data
-  - volume_name: omada-logs
+volumes: []

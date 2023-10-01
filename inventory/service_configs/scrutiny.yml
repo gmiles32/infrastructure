@@ -7,7 +7,7 @@ containers:
     ports:
       - '8086:8086'
     volumes:
-      - 'influxdb:/var/lib/influxdb2'
+      - './influxdb:/var/lib/influxdb2'
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
       interval: 5s
@@ -23,7 +23,7 @@ containers:
     ports:
       - '8080:8080'
     volumes:
-      - 'config:/opt/scrutiny/config'
+      - './config:/opt/scrutiny/config'
     environment:
       - "SCRUTINY_WEB_INFLUXDB_HOST=influxdb"
     depends_on:
@@ -57,6 +57,4 @@ networks:
     external: true
   - network_name: default
 
-volumes:
-  - volume_name: influxdb
-  - volume_name: config
+volumes: []

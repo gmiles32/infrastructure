@@ -8,3 +8,6 @@ configure HOST *TAGS:
 
 serv:
     ansible-playbook -b playbooks/start_docker.yml
+
+ssh HOST:
+    ansible-playbook -b playbooks/ssh.yml -e host={{HOST}}

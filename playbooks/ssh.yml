@@ -1,0 +1,16 @@
+- hosts: "{{ host }}"
+  vars_files:
+    - ../vars/vault.yml
+  tasks:
+    - name: Copy trusted ssh keys
+      ansible.posix.authorized_key:
+        user: sysadmin
+        key: "{{ ssh_keys }}"
+        state: present
+        exclusive: true
+    - name: Disable password SSH
+      lineinfile:
+        path: '/etc/ssh/sshd_config'
+        regexp: '^(.*)PasswordAuthentication(.*)$'
+        line: 'PasswordAuthentication no'
+      become: true

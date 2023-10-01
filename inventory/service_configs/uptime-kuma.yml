@@ -5,7 +5,7 @@ containers:
     image: louislam/uptime-kuma:1.23.2@sha256:536dadc13647adf350be321f167c2ce868b87871a9ec6c0be6ce0db2f3556271
     container_name: uptime-kuma
     volumes:
-      - data:/app/data
+      - ./data:/app/data
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -27,5 +27,4 @@ networks:
   - network_name: frontend
     external: true
 
-volumes:
-  - volume_name: data
+volumes: []

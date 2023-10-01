@@ -1,35 +1,27 @@
 # grog.package
 package_list:
   - name: vim
-    dnf_ignore: yes
   - name: rsync
-    dnf_ignore: yes
   - name: net-tools
-    dnf_ignore: yes
   - name: git
-    dnf_ignore: yes
-  - name: htop
-    dnf_ignore: yes
   - name: firewalld
-    dnf_ignore: yes
   - name: nfs
     apt: nfs-commons
+    dnf: nfs-utils
     yum: nfs-utils
-    dnf_ignore: yes
   - name: wget
-    dnf_ignore: yes
   - name: python-firewall
-    dnf_ignore: yes
 package_update_cache: yes
 
 # geerlingguy.pip
-pip_install_packages: []
+pip_install_packages:
+  - name: requests
 
 # docker_firewalld
 interface: ens18
 
 # docker_compose_generator
-docker_compose_generator_output_path: /home/sysadmin/tmp
+docker_compose_generator_output_path: /home/sysadmin/docker
 services:
   - postgres
   - authelia
