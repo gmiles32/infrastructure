@@ -32,7 +32,7 @@ containers:
 
   - service_name: frontend
     active: true
-    image: vikunja/frontend:0.21.0@sha256:9bfee71d3e97c3c2ba3543b61f79406b34d5534183fd05f5b290726c184a6d90
+    image: vikunja/frontend:0.21.0@sha256:fdd4582979beee4a6bef2d4d8e3744809b82ab2e198d708a829d7189a0ad9882
     container_name: vikunja-web
     labels:
       - "traefik.enable=true"
