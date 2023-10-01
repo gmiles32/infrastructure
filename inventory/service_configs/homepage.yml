@@ -1,0 +1,32 @@
+compose_schema_version: "3.3"
+containers:
+  - service_name: homepage
+    active: true
+    image: ghcr.io/benphelps/homepage:v0.6.35
+    container_name: homepage
+    volumes:
+      - ./config:/app/config # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations, see alternative methods
+      - ./icons:/app/public/icons
+      - ./images:/app/public/images
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homepage.entrypoints=web"
+      - "traefik.http.routers.homepage.rule=Host(`home.{{ domain }}`)"
+      - "traefik.http.middlewares.homepage-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.homepage.middlewares=homepage-https-redirect"
+      - "traefik.http.routers.homepage-secure.entrypoints=websecure"
+      - "traefik.http.routers.homepage-secure.rule=Host(`home.{{ domain }}`)"
+      - "traefik.http.routers.homepage-secure.tls=true"
+      - "traefik.http.routers.homepage-secure.service=homepage"
+      - "traefik.http.services.homepage.loadbalancer.server.port=3000"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.homepage-secure.middlewares=authelia@docker"
+    networks:
+      - frontend
+
+networks:
+  - network_name: frontend
+    external: true
+
+volumes: []

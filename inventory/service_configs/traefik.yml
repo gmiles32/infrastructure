@@ -1,0 +1,60 @@
+compose_schema_version: '3'
+containers:
+  - service_name: traefik
+    active: true
+    image: traefik:v2.10.4@sha256:57b2516b7549c4f59531bb09311a54a05af237670676529249c3c0b8e58ad0f3
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - "CF_API_EMAIL={{ cf_api_email }}"
+      - "CF_API_KEY={{ cf_api_key }}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml:ro
+      - ./acme.json:/acme.json
+      - ./config.yml:/config.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=web"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.{{ domain }}`)"
+      - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.sslheader.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.routers.traefik.middlewares=traefik-https-redirect"
+      - "traefik.http.routers.traefik-secure.entrypoints=websecure"
+      - "traefik.http.routers.traefik-secure.rule=Host(`traefik.{{ domain }}`)"
+      - "traefik.http.routers.traefik-secure.tls=true"
+      - "traefik.http.routers.traefik-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].main={{ domain }}"
+      - "traefik.http.routers.traefik-secure.tls.domains[0].sans=*.{{ domain }}"
+      - "traefik.http.routers.traefik-secure.service=api@internal"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.traefik-secure.middlewares=authelia@docker"
+
+  - service_name: traefik-certs-dumper
+    active: false
+    image: ldez/traefik-certs-dumper:v2.8.1
+    container_name: traefik-certs-dumper
+    entrypoint: sh -c '
+      apk add jq
+      ; while ! [ -e /data/acme.json ]
+      || ! [ `jq ".[] | .Certificates | length" /data/acme.json` != 0 ]; do
+      sleep 1
+      ; done
+      && traefik-certs-dumper file --version v2 --watch
+      --source /data/acme.json --dest /data/certs'
+    volumes:
+      - ./:/data
+
+networks:
+  - network_name: frontend
+    external: true
+
+volumes: []

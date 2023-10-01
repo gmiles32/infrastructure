@@ -1,0 +1,58 @@
+compose_schema_version: '3'
+containers:
+  - service_name: vaultwarden
+    active: true
+    image: vaultwarden/server:1.29.2@sha256:fe651bfc38e98cfdd56c43e4ad3b8ad35d1bead78bd5b636e4acfceb4a48bd46
+    container_name: vaultwarden
+    user: 1000:1000
+    volumes:
+      - ./data:/data/
+    networks:
+      - frontend
+      - backend
+    environment:
+      - SMTP_HOST=protonmail-bridge
+      - SMTP_FROM={{ smtp_email }}
+      - SMTP_FROM_NAME=Vaultwarden
+      - SMTP_SECURITY=off 
+      - SMTP_PORT=25         
+      - SMTP_USERNAME={{ smtp_username }}
+      - SMTP_PASSWORD={{ smtp_password }}
+      - SMTP_TIMEOUT=15
+      - SIGNUPS_ALLOWED=false
+      - DOMAIN=https://vw.{{ domain }}
+      - SHOW_PASSWORD_HINT=false
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=frontend
+      # Redirect to get the certs
+      - traefik.http.middlewares.redirect-https.redirectScheme.scheme=https
+      - traefik.http.middlewares.redirect-https.redirectScheme.permanent=true
+      # routers & services
+      - traefik.http.routers.vaultwarden-ui-https.rule=Host(`vw.{{ domain }}`)
+      - traefik.http.routers.vaultwarden-ui-https.entrypoints=websecure
+      - traefik.http.routers.vaultwarden-ui-https.tls=true
+      - traefik.http.routers.vaultwarden-ui-https.service=vaultwarden-ui
+      - traefik.http.routers.vaultwarden-ui-http.rule=Host(`vw.{{ domain }}`)
+      - traefik.http.routers.vaultwarden-ui-http.entrypoints=web
+      - traefik.http.routers.vaultwarden-ui-http.middlewares=redirect-https
+      - traefik.http.routers.vaultwarden-ui-http.service=vaultwarden-ui
+      - traefik.http.services.vaultwarden-ui.loadbalancer.server.port=80
+      - traefik.http.routers.vaultwarden-websocket-https.rule=Host(`vw.local.flaskforge.example.com`) && Path(`/#/login`)
+      - traefik.http.routers.vaultwarden-websocket-https.entrypoints=websecure
+      - traefik.http.routers.vaultwarden-websocket-https.tls=true
+      - traefik.http.routers.vaultwarden-websocket-https.service=vaultwarden-websocket
+      - traefik.http.routers.vaultwarden-websocket-http.rule=Host(`vw.{{ domain }}`) && Path(`/#/login`)
+      - traefik.http.routers.vaultwarden-websocket-http.entrypoints=web
+      - traefik.http.routers.vaultwarden-websocket-http.middlewares=redirect-https
+      - traefik.http.routers.vaultwarden-websocket-http.service=vaultwarden-websocket
+      - traefik.http.services.vaultwarden-websocket.loadbalancer.server.port=3012
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: backend
+    external: true
+
+volumes: []
+

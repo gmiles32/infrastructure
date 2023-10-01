@@ -1,0 +1,62 @@
+compose_schema_version: '2.4'
+containers:
+  - service_name: influxdb
+    active: true
+    image: influxdb:2.7
+    container_name: scrutiny-db
+    ports:
+      - '8086:8086'
+    volumes:
+      - 'influxdb:/var/lib/influxdb2'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+    networks:
+      - default
+
+  - service_name: web
+    active: true
+    image: 'ghcr.io/analogj/scrutiny:master-web'
+    container_name: scrutiny-web
+    ports:
+      - '8080:8080'
+    volumes:
+      - 'config:/opt/scrutiny/config'
+    environment:
+      - "SCRUTINY_WEB_INFLUXDB_HOST=influxdb"
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+    networks:
+      - default
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.scrutiny.entrypoints=web"
+      - "traefik.http.routers.scrutiny.rule=Host(`scrutiny.{{ domain }}`)"
+      - "traefik.http.middlewares.scrutiny-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.scrutiny.middlewares=scrutiny-https-redirect"
+      - "traefik.http.routers.scrutiny-secure.entrypoints=websecure"
+      - "traefik.http.routers.scrutiny-secure.rule=Host(`scrutiny.{{ domain }}`)"
+      - "traefik.http.routers.scrutiny-secure.tls=true"
+      - "traefik.http.routers.scrutiny-secure.service=scrutiny"
+      - "traefik.http.services.scrutiny.loadbalancer.server.port=8080"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.scrutiny-secure.middlewares=authelia@docker"
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: default
+
+volumes:
+  - volume_name: influxdb
+  - volume_name: config

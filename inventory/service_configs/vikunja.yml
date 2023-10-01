@@ -1,0 +1,57 @@
+compose_schema_version: '3'
+containers:
+  - service_name: api
+    active: true
+    image: vikunja/api:0.21.0@sha256:1266048efc716556602df482ecc353a45dfc9eae30e72c561e384eae1187b515
+    container_name: vikunja-api
+    environment:
+      - "PUID=1000"
+      - "GUID=1000"
+      - "VIKUNJA_SERVICE_JWTSECRET={{ vikunja_jwt_secret }}"
+      - "DATABASE_PASSWORD={{ vikunja_pg_password }}"
+      - "MAILER_USERNAME={{ smtp_username }}"
+      - "MAILER_PASSWORD={{ smtp_password }}"
+      - "MAILER_FROMEMAIL={{ smtp_email }}"
+    volumes: 
+      - ./files:/app/vikunja/files
+      - ./config.yml:/etc/vikunja/config.yml:ro
+    networks:
+      - frontend
+      - backend
+    restart: unless-stopped
+    labels:   
+      - "traefik.enable=true"
+      - "traefik.http.routers.vikunja-api.entrypoints=web"
+      - "traefik.http.routers.vikunja-api.rule=Host(`vikunja.{{ domain }}`) && (PathPrefix(`/api/v1`) || PathPrefix(`/dav/`) || PathPrefix(`/.well-known/`))"
+      - "traefik.http.middlewares.vikunja-api-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.vikunja-api.middlewares=vikunja-api-https-redirect"
+      - "traefik.http.routers.vikunja-api-secure.entrypoints=websecure"
+      - "traefik.http.routers.vikunja-api-secure.rule=Host(`vikunja.{{ domain }}`) && (PathPrefix(`/api/v1`) || PathPrefix(`/dav/`) || PathPrefix(`/.well-known/`))"
+      - "traefik.http.routers.vikunja-api-secure.tls=true"
+      - "traefik.docker.network=frontend"
+
+  - service_name: frontend
+    active: true
+    image: vikunja/frontend:0.21.0@sha256:9bfee71d3e97c3c2ba3543b61f79406b34d5534183fd05f5b290726c184a6d90
+    container_name: vikunja-web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vikunja-frontend.entrypoints=web"
+      - "traefik.http.routers.vikunja-frontend.rule=Host(`vikunja.{{ domain }}`)"
+      - "traefik.http.middlewares.vikunja-frontend-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.vikunja-frontend.middlewares=vikunja-frontend-https-redirect"
+      - "traefik.http.routers.vikunja-frontend-secure.entrypoints=websecure"
+      - "traefik.http.routers.vikunja-frontend-secure.rule=Host(`vikunja.{{ domain }}`)"
+      - "traefik.http.routers.vikunja-frontend-secure.tls=true"
+      - "traefik.docker.network=frontend"
+    networks:
+      - frontend
+    restart: unless-stopped
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: backend
+    external: true
+
+volumes: []

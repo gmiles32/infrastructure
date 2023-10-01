@@ -1,0 +1,104 @@
+compose_schema_version: "3.8"
+containers:
+  - service_name: immich-server
+    active: true
+    container_name: immich-server
+    image: ghcr.io/immich-app/immich-server:v1.79.1
+    command: [ "start.sh", "immich" ]
+    user: 1000:1000
+    volumes:
+      - photos:/usr/src/app/upload
+    env_file:
+      - .env
+    environment:
+      - "DB_PASSWORD={{ immich_pg_password }}"
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - backend
+      - default
+  - service_name: immich-microservices
+    active: true
+    container_name: immich-microservices
+    image: ghcr.io/immich-app/immich-server:v1.79.1
+    command:  [ "start.sh", "immich" ]
+    user: 1000:1000
+    volumes:
+      - photos:/usr/src/app/upload
+    env_file:
+      - .env
+    environment:
+      - "DB_PASSWORD={{ immich_pg_password }}"
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - backend
+      - default
+
+  - service_name: immich-web
+    active: true
+    container_name: immich-web
+    image: ghcr.io/immich-app/immich-web:v1.79.1
+    user: 1000:1000
+    env_file:
+      - .env
+    environment:
+      - "DB_PASSWORD={{ immich_pg_password }}"
+    restart: unless-stopped
+    networks:
+      - default
+
+  - service_name: redis
+    active: true
+    container_name: immich-redis
+    image: redis:6.2-alpine@sha256:9b1723d69398d170688d7f382f6ace36d0fc209481b143f3acf58a2f6f0743d3
+    restart: unless-stopped
+    networks:
+      - default
+
+  - service_name: immich-proxy
+    active: true
+    container_name: immich-proxy
+    image: ghcr.io/immich-app/immich-proxy:v1.79.1
+    environment:
+      - IMMICH_SERVER_URL
+      - IMMICH_WEB_URL
+    depends_on:
+      - immich-server
+      - immich-web
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.immich.entrypoints=web"
+      - "traefik.http.routers.immich.rule=Host(`immich.{{ domain }}`)"
+      - "traefik.http.middlewares.immich-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.immich.middlewares=immich-https-redirect"
+      - "traefik.http.routers.immich-secure.entrypoints=websecure"
+      - "traefik.http.routers.immich-secure.rule=Host(`immich.{{ domain }}`)"
+      - "traefik.http.routers.immich-secure.tls=true"
+      - "traefik.http.routers.immich-secure.service=immich"
+      - "traefik.http.services.immich.loadbalancer.server.port=8080"
+      - "traefik.docker.network=frontend"
+    networks:
+      - frontend
+      - default
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: backend
+    external: true
+  - network_name: default
+
+volumes:
+  - volume_name: photos
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/immich"

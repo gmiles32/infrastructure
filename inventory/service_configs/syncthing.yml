@@ -1,0 +1,49 @@
+compose_schema_version: "3.2"
+containers:
+  - service_name: syncthing
+    active: true
+    image: lscr.io/linuxserver/syncthing:1.24.0@sha256:7a583ab119b5732d4711bc39bae7465f69b48f31db7867f8568ed0abc9e8076e
+    container_name: syncthing
+    environment:
+      - "PUID=1000"
+      - "PGID=1000"
+      - "TZ=America/Denver"
+    volumes:
+      - config:/config
+      - data:/data
+    ports:
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
+    networks:
+      - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.syncthing.entrypoints=web"
+      - "traefik.http.routers.syncthing.rule=Host(`syncthing.{{ domain }}`)"
+      - "traefik.http.middlewares.syncthing-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.syncthing.middlewares=syncthing-https-redirect"
+      - "traefik.http.routers.syncthing-secure.entrypoints=websecure"
+      - "traefik.http.routers.syncthing-secure.rule=Host(`syncthing.{{ domain }}`)"
+      - "traefik.http.routers.syncthing-secure.tls=true"
+      - "traefik.http.routers.syncthing-secure.service=syncthing"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.syncthing-secure.middlewares=authelia@docker"
+
+networks:
+  - network_name: frontend
+    external: true
+
+volumes:
+  - volume_name: config
+    driver_opts:
+      - name: type
+        value: "nfs"
+      - name: o
+        value: "addr={{ nas }},rw"
+      - name: device
+        value: ":/mnt/proton/containers/syncthing"
+  - volume_name: data
+

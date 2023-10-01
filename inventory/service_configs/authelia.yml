@@ -1,0 +1,33 @@
+compose_schema_version: '3.3'
+containers:
+  - service_name: authelia
+    active: true
+    image: authelia/authelia:4.37.5@sha256:82831059ce5c1151d4ccd37f803cdf35fccbd488c80fe7f9f8de6b76adf40447
+    container_name: authelia
+    user: 1000:1000
+    volumes:
+      - ./config:/config
+    networks:
+      - frontend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.authelia.rule=Host(`auth.{{ domain }}`)'
+      - 'traefik.http.routers.authelia.entrypoints=websecure'
+      - 'traefik.http.routers.authelia.tls=true'
+      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.{{ domain }}%2F'
+      - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'  # yamllint disable-line rule:line-length
+      - "traefik.docker.network=frontend"
+    restart: unless-stopped
+    environment:
+      - "TZ=America/Denver"
+      - "AUTHELIA_JWT_SECRET={{ authelia_jwt_secret }}"
+      - "AUTHELIA_SESSION_SECRET={{ authelia_session_secret }}"
+      - "AUTHELIA_STORAGE_ENCRYPTION_KEY={{ authelia_storage_encryption_key }}"
+      - "AUTHELIA_DUO_API_INTEGRATION_KEY={{ authelia_duo_api_integration_key }}"
+      - "AUTHELIA_DUO_API_SECRET_KEY={{ authelia_duo_api_secret_key }}"
+      - "AUTHELIA_NOTIFIER_SMTP_PASSWORD={{ smtp_password }}"
+
+networks:
+  - network_name: frontend
+    external: true
