@@ -2,7 +2,7 @@ compose_schema_version: '3'
 containers:
   - service_name: api
     active: true
-    image: vikunja/api:0.21.0@sha256:1266048efc716556602df482ecc353a45dfc9eae30e72c561e384eae1187b515
+    image: vikunja/api:0.21.0@sha256:e541ef5599d08f50a24e8de1fd8136f9d0a7ef514916fac6d6bf8ac6c7c16712
     container_name: vikunja-api
     environment:
       - "PUID=1000"
