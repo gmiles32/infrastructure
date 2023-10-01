@@ -1,0 +1,8 @@
+- name: Homelab-specific setup
+  include_tasks: homelab_specific.yml
+
+- name: Start all services
+  command: docker compose up -d --force-recreate
+  args:
+    chdir: "{{ docker_compose_generator_output_path }}/{{ item }}"
+  loop: "{{ services }}"

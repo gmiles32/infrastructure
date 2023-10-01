@@ -1,0 +1,38 @@
+- name: Disable iptables for Docker
+  copy:
+    dest: /etc/docker/daemon.json
+    content: |
+      {
+      "iptables": false
+      }
+
+- name: Restart docker
+  systemd_service:
+    name: docker
+    state: restarted
+
+- name: Add masquerading to firewalld
+  firewalld:
+    masquerade: true
+    zone: public
+    permanent: true
+    state: enabled
+
+- name: Add `docker0` interface to firewalld trusted zone
+  firewalld:
+    zone: trusted
+    interface: docker0
+    permanent: true
+    state: enabled
+
+- name: Restart docker
+  systemd_service:
+    name: docker
+    state: restarted
+    
+- name: Add network interface to firewalld public zone
+  firewalld:
+    zone: public
+    interface: "{{ interface }}"
+    permanent: true 
+    state: enabled

@@ -3,7 +3,14 @@
     - ../vars/vault.yml
   roles:
     - role: grog.package
+      tags: basic
+    - role: geerlingguy.pip
+      tags: basic
     - role: geerlingguy.docker
-    # - role: gmiles32.docker_firewalld
+      tags: docker
+    - role: docker_firewalld
+      tags: docker
     - role: docker_compose_generator
-      tags: compose
+      tags: 
+        - docker
+        - compose

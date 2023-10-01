@@ -18,16 +18,22 @@ package_list:
     dnf_ignore: yes
   - name: wget
     dnf_ignore: yes
-  - name: wireguard
-    dnf: wireguard-tools
-    yum_ignore: yes
+  - name: python-firewall
+    dnf_ignore: yes
 package_update_cache: yes
+
+# geerlingguy.pip
+pip_install_packages: []
+
+# docker_firewalld
+interface: ens18
 
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/tmp
 services:
-  - authelia
   - postgres
+  - authelia
+  - traefik
   - immich
   - traefik
   - calibre

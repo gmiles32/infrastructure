@@ -1,0 +1,5 @@
+- hosts: dockerhost
+  vars_files:
+    - ../vars/vault.yml
+  roles:
+    - role: docker_start
