@@ -5,5 +5,5 @@ This is how I manage my homelab setup with Ansible. This repo is a WIP, but the 
 - [ ] Need to document how to run docker containers after generating compose
 - [ ] Add playbook for mass start up/spin down of docker containers
 - [ ] Add PVE reboot playbook
-- [ ] Add firewalld configuration to work with docker
-- [ ] Add renovate bot to repository for updating docker images  
+- [X] Add firewalld configuration to work with docker
+- [X] Add renovate bot to repository for updating docker images  
