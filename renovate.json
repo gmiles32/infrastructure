@@ -14,7 +14,7 @@
         "matchHost": "docker.io",
         "concurrentRequestLimit": 2
       }
-    ]
+    ],
     "packageRules": [ 
       {
         "description": "Automatically merge minor and patch-level updates",
