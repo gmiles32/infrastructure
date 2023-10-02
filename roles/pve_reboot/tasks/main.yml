@@ -1,7 +1,7 @@
 - name: Send Discord notification
   community.general.discord:
-    webhook_id: "1141509935994249358"
-    webhook_token: "jWZyabmpOiyhmjdxr90ssNfzx8dh8gBp0e_l-Zn7p2buMMPG0xz9zLR1g-gudmI5es2c"
+    webhook_id: "{{ ansible_discord_webhook_id }}"
+    webhook_token: "{{ ansible_discord_webhook_token }}"
     embeds:
       - title: "🔁 Reboot initiated 🔁"
         fields:
@@ -22,8 +22,8 @@
 
 - name: Send Discord notification
   community.general.discord:
-    webhook_id: "1141509935994249358"
-    webhook_token: "jWZyabmpOiyhmjdxr90ssNfzx8dh8gBp0e_l-Zn7p2buMMPG0xz9zLR1g-gudmI5es2c"
+    webhook_id: "{{ ansible_discord_webhook_id }}"
+    webhook_token: "{{ ansible_discord_webhook_token }}"
     embeds:
       - title: "💚 Server up 💚"
         fields:

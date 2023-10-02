@@ -6,4 +6,3 @@ roles:
   - src: grog.package
   - src: geerlingguy.docker
   - src: geerlingguy.pip
-  # - src: ironicbadger.docker_compose_generator

@@ -1,0 +1,19 @@
+- host: dockerhost
+  tasks:
+    - name: Stop all docker containers
+      command: docker stop $(docker ps -a -q)
+
+    - name: Remove protonmail-bridge
+      community.docker.docker_container:
+        name: protonmail-bridge
+        state: absent
+
+- host: pve
+  roles:
+    - role: pve_reboot
+
+- host: dockerhost
+  vars_files:
+    - ../vars/vault.yml
+  roles:
+    - role: docker_start      

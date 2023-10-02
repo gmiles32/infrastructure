@@ -11,3 +11,6 @@ serv:
 
 ssh HOST:
     ansible-playbook -b playbooks/ssh.yml -e host={{HOST}}
+
+update:
+    ansible-playbook -b playbooks/update.yml

@@ -1,0 +1,69 @@
+- hosts: "apt"
+  become: yes
+  vars_files:
+    - ../vars/vault.yml
+  tasks:
+    - name: Update apt-cache and do dist upgrade
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Check if reboot it required
+      stat:
+        path: /var/run/reboot-required
+        get_md5: no
+      register: reboot_required_file
+
+    - name: Send Discord notification if reboot is required
+      community.general.discord:
+        webhook_id: "{{ ansible_discord_webhook_id }}"
+        webhook_token: "{{ ansible_discord_webhook_token }}"
+        embeds:
+          - title: "❗Reboot required❗"
+            fields:
+              - name: "Server IP"
+                value: "{{ inventory_hostname }}"
+            timestamp: "{{ ansible_date_time.iso8601 }}"
+            color: 15548997
+      when: reboot_required_file.stat.exists == true
+
+    - name: Remove dependencies that are no longer required.
+      apt:
+        autoremove: yes
+
+- hosts: yum
+  become: yes
+  vars_files:
+    - ../vars/vault.yml
+  tasks:
+    - name: Update all installed packages using YUM module
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+        update_only: yes
+      register: yum_update_status
+
+    - name: Check if reboot it required
+      stat:
+        path: /var/run/reboot-required
+        get_md5: no
+      register: reboot_required_file
+
+    - name: Send Discord notification if reboot is required
+      community.general.discord:
+        webhook_id: "{{ ansible_discord_webhook_id }}"
+        webhook_token: "{{ ansible_discord_webhook_token }}"
+        embeds:
+          - title: "❗Reboot required❗"
+            fields:
+              - name: "Server IP"
+                value: "{{ inventory_hostname }}"
+            timestamp: "{{ ansible_date_time.iso8601 }}"
+            color: 15548997
+      when: reboot_required_file.stat.exists == true
+      
+    - name: Remove packates not needed anymore
+      yum:
+        autoremove: yes
+
