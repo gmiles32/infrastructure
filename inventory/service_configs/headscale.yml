@@ -1,0 +1,75 @@
+compose_scheme_version: '3'
+containers: 
+  - service_name: headscale
+    active: true
+    image: headscale/headscale:latest
+    pull_policy: always
+    container_name: headscale
+    restart: unless-stopped
+    command: headscale serve
+    networks:
+      - frontend
+    volumes:
+      - ./headscale/config:/etc/headscale
+      - ./headscale/data:/var/lib/headscale
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.headscale-rtr.rule=PathPrefix(`/`) && Host(`hs.{{ hs_domain }}`)"
+      - "traefik.http.services.headscale-svc.loadbalancer.server.port=8080"
+      - "traefik.docker.network=frontend"
+  - service_name: traefik
+    active: true
+    image: traefik:v2.10.4@sha256:57b2516b7549c4f59531bb09311a54a05af237670676529249c3c0b8e58ad0f3
+    container_name: traefik
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - frontend
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - "CF_API_EMAIL={{ cf_api_email }}"
+      - "CF_API_KEY={{ cf_api_key }}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/traefik.yml:/traefik.yml:ro
+      - ./traefik/acme.json:/acme.json
+
+  - service_name: authelia
+    active: true
+    image: authelia/authelia:4.37.5@sha256:82831059ce5c1151d4ccd37f803cdf35fccbd488c80fe7f9f8de6b76adf40447
+    container_name: authelia
+    user: 1000:1000
+    volumes:
+      - ./authelia:/config
+    networks:
+      - frontend
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.authelia.rule=Host(`auth.{{ hs_domain }}`)'
+      - 'traefik.http.routers.authelia.entrypoints=websecure'
+      - 'traefik.http.routers.authelia.tls=true'
+      - "traefik.http.routers.authelia-secure.tls.certresolver=cloudflare"
+      - "traefik.http.routers.authelia-secure.tls.domains[0].main=auth.{{ hs_domain }}"
+      - 'traefik.http.middlewares.authelia.forwardAuth.address=http://authelia:9091/api/verify?rd=https%3A%2F%2Fauth.{{ hs_domain }}%2F'
+      - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
+      - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'  # yamllint disable-line rule:line-length
+      - "traefik.docker.network=frontend"
+    restart: unless-stopped
+    environment:
+      - "TZ=America/Denver"
+      - "AUTHELIA_JWT_SECRET={{ headscale_jwt_secret }}"
+      - "AUTHELIA_SESSION_SECRET={{ headscale_session_secret }}"
+      - "AUTHELIA_STORAGE_ENCRYPTION_KEY={{ headscale_storage_encryption_key }}"
+      # AUTHELIA_DUO_API_INTEGRATION_KEY_FILE: /run/secrets/authelia_duo_api_integration_key
+      # AUTHELIA_DUO_API_SECRET_KEY_FILE: /run/secrets/authelia_duo_api_secret_key
+      # AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE: /run/secrets/authelia_smtp_password
+
+networks:
+  - network_name: frontend
+    external: true
+
+volumes: []

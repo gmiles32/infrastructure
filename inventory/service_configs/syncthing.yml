@@ -38,10 +38,11 @@ networks:
 
 volumes: []
   # - volume_name: config
-    # driver_opts:
-    #   - name: type
-    #     value: "nfs"
-    #   - name: o
-    #     value: "addr={{ nas }},rw"
-    #   - name: device
-    #     value: ":/mnt/proton/containers/syncthing"
+  #   driver: local
+  #   driver_opts:
+  #     - name: type
+  #       value: "nfs"
+  #     - name: o
+  #       value: "nfsvers=4,addr={{ nas }},rw"
+  #     - name: device
+  #       value: ":/mnt/proton/containers/syncthing"

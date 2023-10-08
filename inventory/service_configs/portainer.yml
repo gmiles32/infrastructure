@@ -2,30 +2,35 @@ compose_schema_version: '3'
 containers:
   - service_name: portainer
     active: yes
-    image: portainer/portainer-ce:2.19.1@sha256:f29cbc7b26ebd701b1fe92b4df42edea350e871372a6296a1fa16ba999481fb2
+    # image: portainer/portainer-ce:2.18.4@sha256:4b9873531d38af12dfd4dbc51af7c866ba8494fc25ee3fe47e7572e6e8dd6b23
+    image: portainer/portainer-ce:2.19.1@sha256:940982e6f8478323947a5b8fd35442902a700e2ac3fa3ba177907384df71db6a
     container_name: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
-    networks:
-      - frontend
+    # networks:
+    #   - frontend
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./data:/data
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer.entrypoints=web"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.{{ domain }}`)"
-      - "traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.portainer.middlewares=portainer-https-redirect"
-      - "traefik.http.routers.portainer-secure.entrypoints=websecure"
-      - "traefik.http.routers.portainer-secure.rule=Host(`portainer.{{ domain }}`)"
-      - "traefik.http.routers.portainer-secure.tls=true"
-      - "traefik.http.routers.portainer-secure.service=portainer"
-      - "traefik.http.services.portainer.loadbalancer.server.port=9000"
-      - "traefik.docker.network=frontend"
+    ports:
+      - "9000:9000"
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.portainer.entrypoints=web"
+    #   - "traefik.http.routers.portainer.rule=Host(`portainer.{{ domain }}`)"
+    #   - "traefik.http.middlewares.portainer-https-redirect.redirectscheme.scheme=https"
+    #   - "traefik.http.routers.portainer.middlewares=portainer-https-redirect"
+    #   - "traefik.http.routers.portainer-secure.entrypoints=websecure"
+    #   - "traefik.http.routers.portainer-secure.rule=Host(`portainer.{{ domain }}`)"
+    #   - "traefik.http.routers.portainer-secure.tls=true"
+    #   - "traefik.http.routers.portainer-secure.service=portainer"
+    #   - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+    #   - "traefik.docker.network=frontend"
 
-networks:
-  - network_name: frontend
-    external: true
+networks: []
+  # - network_name: frontend
+  #   external: true
+
+volumes: []

@@ -1,0 +1,37 @@
+# grog.package
+package_list:
+  - name: vim
+  - name: rsync
+  - name: net-tools
+  - name: git
+  - name: firewalld
+  - name: nfs-common
+    apt: nfs-common
+    dnf: nfs-utils
+    yum: nfs-utils
+  - name: wget
+package_update_cache: yes
+
+# geerlingguy.pip
+pip_install_packages:
+  - name: requests
+  - name: firewall
+
+# docker_firewalld
+interface: ens18
+
+# docker_compose_generator
+docker_compose_generator_output_path: /home/sysadmin/docker
+services:
+  - portainer
+  - uptime-kuma
+services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
+
+# docker_start
+docker_networks: []
+ports:
+  - port_number: "9000"
+    protocol: "tcp"
+  - port_number: "3001"
+    protocol: "tcp"
+commands: []

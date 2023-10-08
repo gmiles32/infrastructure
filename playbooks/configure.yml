@@ -11,6 +11,4 @@
     - role: docker_firewalld
       tags: docker
     - role: docker_compose_generator
-      tags: 
-        - docker
-        - compose
+      tags: compose

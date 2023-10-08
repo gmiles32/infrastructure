@@ -1,4 +1,4 @@
-- hosts: dockerhost
+- hosts: "{{ host }}"
   vars_files:
     - ../vars/vault.yml
   roles:

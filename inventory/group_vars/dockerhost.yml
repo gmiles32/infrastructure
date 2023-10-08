@@ -26,7 +26,7 @@ services:
   - postgres
   - authelia
   - traefik
-  - portainer
+  # - portainer
   - immich
   - traefik
   - calibre
@@ -36,9 +36,45 @@ services:
   - paperless
   - scrutiny
   - syncthing
-  - uptime-kuma
+  # - uptime-kuma
   - vaultwarden
   - vikunja
+  - portainer-agent
 services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
 nas: "192.168.1.11"
 
+# docker_start
+docker_networks:
+  - frontend
+  - backend
+ports:
+  # Traefik
+  - port_number: "80"
+    protocol: "tcp"
+  - port_number: "443"
+    protocol: "tcp"
+  # Syncthing
+  - port_number: "22000"
+    protocol: "tcp"
+  - port_number: "22000"
+    protocol: "udp"
+  - port_number: "21027"
+    protocol: "udp"
+  # Omada
+  - port_number: "8043"
+    protocol: "tcp"
+  - port_number: "27001"
+    protocol: "tcp"
+  - port_number: "27001"
+    protocol: "udp"
+  - port_number: "29810-29814"
+    protocol: "tcp"
+  - port_number: "29810-29814"
+    protocol: "udp"  
+  # Portainer Agent
+  - port_number: "9001"
+    protocol: "tcp"
+commands:
+  - "docker run -d --name=protonmail-bridge -v protonmail:/root -p \
+     1025:25/tcp -p 1143:143/tcp --restart=unless-stopped --network=backend \
+     shenxn/protonmail-bridge"

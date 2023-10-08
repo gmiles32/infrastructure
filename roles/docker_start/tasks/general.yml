@@ -1,0 +1,23 @@
+- name: Make docker networks
+  loop: "{{ docker_networks }}"
+  community.docker.docker_network:
+    name: "{{ item }}"
+    state: present
+
+- name: Open firewalld ports
+  loop: "{{ ports }}"
+  become: yes      
+  firewalld:
+    zone: public
+    permanent: true
+    port: "{{ item.port_number }}/{{ item.protocol }}"
+    state: enabled
+
+- name: Reload firewalld
+  become: yes
+  command: firewall-cmd --reload
+
+- name: Run additional commands (docker run)
+  loop: "{{ commands }}"
+  command: "{{ item }}"
+  ignore_errors: true

@@ -1,5 +1,5 @@
 - name: Homelab-specific setup
-  include_tasks: homelab_specific.yml
+  include_tasks: general.yml
 
 - name: Start all services
   command: docker compose up -d --force-recreate

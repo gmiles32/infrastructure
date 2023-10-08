@@ -36,3 +36,19 @@
     interface: "{{ interface }}"
     permanent: true 
     state: enabled
+
+# - name: Install lazydocker
+#   command: "curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash"
+
+# - name: Add alias to .bashrc
+#   lineinfile:
+#     path: /home/{{ remote_user }}/.bashrc
+#     line: 'alias lzd="/home/{{ remote_user }}/.local/bin/lazydocker"'
+#     state: present
+#     become: false
+
+# - name: Add remote user to docker group
+#   user:
+#     name: "{{ remote_user }}"
+#     groups: docker
+#     append: yes

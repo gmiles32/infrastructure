@@ -6,8 +6,8 @@ reqs *FORCE:
 configure HOST *TAGS:
     ansible-playbook -b playbooks/configure.yml -e host={{HOST}} {{TAGS}}
 
-serv:
-    ansible-playbook -b playbooks/start_docker.yml
+serv HOST:
+    ansible-playbook -b playbooks/start_docker.yml -e host={{HOST}}
 
 ssh HOST:
     ansible-playbook -b playbooks/ssh.yml -e host={{HOST}}
