@@ -61,7 +61,7 @@ containers:
   - service_name: immich-proxy
     active: true
     container_name: immich-proxy
-    image: ghcr.io/immich-app/immich-proxy:v1.79.1
+    image: ghcr.io/immich-app/immich-proxy:v1.81.1
     environment:
       - IMMICH_SERVER_URL
       - IMMICH_WEB_URL
