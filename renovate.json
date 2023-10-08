@@ -15,13 +15,4 @@
         "concurrentRequestLimit": 2
       }
     ],
-    "packageRules": [ 
-      {
-        "description": "Automatically merge minor and patch-level updates",
-        "matchUpdateTypes": ["minor", "patch", "digest"],
-        "automerge": true,
-        "automergeType": "branch" ,
-        "ignoreTests": true
-      }
-    ]
   }
