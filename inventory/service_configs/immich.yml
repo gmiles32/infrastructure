@@ -13,7 +13,7 @@ containers:
     environment:
       - "DB_PASSWORD={{ immich_pg_password }}"
     depends_on:
-      - redis
+      - name: redis
     restart: unless-stopped
     networks:
       - backend
@@ -31,7 +31,7 @@ containers:
     environment:
       - "DB_PASSWORD={{ immich_pg_password }}"
     depends_on:
-      - redis
+      - name: redis
     restart: unless-stopped
     networks:
       - backend
@@ -66,8 +66,8 @@ containers:
       - IMMICH_SERVER_URL
       - IMMICH_WEB_URL
     depends_on:
-      - immich-server
-      - immich-web
+      - name: immich-server
+      - name: immich-web
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

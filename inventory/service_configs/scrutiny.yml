@@ -27,7 +27,7 @@ containers:
     environment:
       - "SCRUTINY_WEB_INFLUXDB_HOST=influxdb"
     depends_on:
-      influxdb:
+      - name: influxdb
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]

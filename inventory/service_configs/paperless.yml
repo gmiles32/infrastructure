@@ -17,7 +17,7 @@ containers:
     container_name: paperless
     restart: unless-stopped
     depends_on:
-      - broker
+      - name: broker
     healthcheck:
       test: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8000"]
       interval: 30s
