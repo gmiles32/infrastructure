@@ -2,7 +2,7 @@ compose_schema_version: '3'
 containers:
   - service_name: portainer
     active: yes
-    image: portainer/portainer-ce:2.18.4@sha256:4b9873531d38af12dfd4dbc51af7c866ba8494fc25ee3fe47e7572e6e8dd6b23
+    image: portainer/portainer-ce:2.18.4@sha256:94c3056dbe879f3a3df06b427713392a0962924914f5c2fc557de3797f59f926
     container_name: portainer
     restart: unless-stopped
     security_opt:
