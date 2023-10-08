@@ -41,7 +41,7 @@ services:
   - vikunja
   - portainer-agent
 services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
-nas: "192.168.1.11"
+nas: "192.168.5.11"
 
 # docker_start
 docker_networks:
