@@ -9,7 +9,7 @@ containers:
       - "PGID=1000"
       - "TZ=America/Denver"
     volumes:
-      - ./config:/config
+      - config:/config
       - ./data:/data
     ports:
       - 22000:22000/tcp
@@ -36,13 +36,13 @@ networks:
   - network_name: frontend
     external: true
 
-volumes: []
-  # - volume_name: config
-  #   driver: local
-  #   driver_opts:
-  #     - name: type
-  #       value: "nfs"
-  #     - name: o
-  #       value: "nfsvers=4,addr={{ nas }},rw"
-  #     - name: device
-  #       value: ":/mnt/proton/containers/syncthing"
+volumes:
+  - volume_name: config
+    driver: local
+    driver_opts:
+      - name: type
+        value: "nfs"
+      - name: o
+        value: "nfsvers=4,addr={{ nas }},rw"
+      - name: device
+        value: ":/mnt/proton/containers/syncthing"

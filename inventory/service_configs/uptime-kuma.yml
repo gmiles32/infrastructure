@@ -9,24 +9,24 @@ containers:
     restart: unless-stopped
     ports:
       - "3001:3001"
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.kuma.entrypoints=web"
-    #   - "traefik.http.routers.kuma.rule=Host(`kuma.{{ domain }}`)"
-    #   - "traefik.http.middlewares.kuma-https-redirect.redirectscheme.scheme=https"
-    #   - "traefik.http.routers.kuma.middlewares=kuma-https-redirect"
-    #   - "traefik.http.routers.kuma-secure.entrypoints=websecure"
-    #   - "traefik.http.routers.kuma-secure.rule=Host(`kuma.{{ domain }}`)"
-    #   - "traefik.http.routers.kuma-secure.tls=true"
-    #   - "traefik.http.routers.kuma-secure.service=kuma"
-    #   - "traefik.http.services.kuma.loadbalancer.server.port=3001"
-    #   - "traefik.docker.network=frontend"
-    #   - "traefik.http.routers.kuma-secure.middlewares=authelia@docker"
-    # networks:
-    #   - frontend
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kuma.entrypoints=web"
+      - "traefik.http.routers.kuma.rule=Host(`kuma.{{ domain }}`)"
+      - "traefik.http.middlewares.kuma-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.kuma.middlewares=kuma-https-redirect"
+      - "traefik.http.routers.kuma-secure.entrypoints=websecure"
+      - "traefik.http.routers.kuma-secure.rule=Host(`kuma.{{ domain }}`)"
+      - "traefik.http.routers.kuma-secure.tls=true"
+      - "traefik.http.routers.kuma-secure.service=kuma"
+      - "traefik.http.services.kuma.loadbalancer.server.port=3001"
+      - "traefik.docker.network=frontend"
+      - "traefik.http.routers.kuma-secure.middlewares=authelia@docker"
+    networks:
+      - frontend
 
-networks: []
-  # - network_name: frontend
-  #   external: true
+networks:
+  - network_name: frontend
+    external: true
 
 volumes: []
