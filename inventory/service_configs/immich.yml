@@ -8,10 +8,20 @@ containers:
     user: 1000:1000
     volumes:
       - photos:/usr/src/app/upload
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
+      - "DB_HOSTNAME=postgres"
+      - "DB_USERNAME=immich"
+      - "DB_DATABASE_NAME=immich"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "REDIS_HOSTNAME=immich-redis"
+      - "TYPESENSE_ENABLED=false"
+      - "DISABLE_REVERSE_GEOCODING=true"
+      - "REVERSE_GEOCODING_PRECISION=0"
+      - "IMMICH_WEB_URL=http://immich-web:3000"
+      - "IMMICH_SERVER_URL=http://immich-server:3001"
+      - "IMMICH_MACHINE_LEARNING_URL=false"
     depends_on:
       - name: redis
     restart: unless-stopped
@@ -26,10 +36,20 @@ containers:
     user: 1000:1000
     volumes:
       - photos:/usr/src/app/upload
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
+      - "DB_HOSTNAME=postgres"
+      - "DB_USERNAME=immich"
+      - "DB_DATABASE_NAME=immich"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "REDIS_HOSTNAME=immich-redis"
+      - "TYPESENSE_ENABLED=false"
+      - "DISABLE_REVERSE_GEOCODING=true"
+      - "REVERSE_GEOCODING_PRECISION=0"
+      - "IMMICH_WEB_URL=http://immich-web:3000"
+      - "IMMICH_SERVER_URL=http://immich-server:3001"
+      - "IMMICH_MACHINE_LEARNING_URL=false"
     depends_on:
       - name: redis
     restart: unless-stopped
@@ -42,10 +62,20 @@ containers:
     container_name: immich-web
     image: ghcr.io/immich-app/immich-web:v1.81.1
     user: 1000:1000
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
+      - "DB_HOSTNAME=postgres"
+      - "DB_USERNAME=immich"
+      - "DB_DATABASE_NAME=immich"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "REDIS_HOSTNAME=immich-redis"
+      - "TYPESENSE_ENABLED=false"
+      - "DISABLE_REVERSE_GEOCODING=true"
+      - "REVERSE_GEOCODING_PRECISION=0"
+      - "IMMICH_WEB_URL=http://immich-web:3000"
+      - "IMMICH_SERVER_URL=http://immich-server:3001"
+      - "IMMICH_MACHINE_LEARNING_URL=false"
     restart: unless-stopped
     networks:
       - default
@@ -63,8 +93,8 @@ containers:
     container_name: immich-proxy
     image: ghcr.io/immich-app/immich-proxy:v1.81.1
     environment:
-      - IMMICH_SERVER_URL
-      - IMMICH_WEB_URL
+      - "IMMICH_WEB_URL=http://immich-web:3000"
+      - "IMMICH_SERVER_URL=http://immich-server:3001"
     depends_on:
       - name: immich-server
       - name: immich-web

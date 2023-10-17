@@ -57,10 +57,13 @@ containers:
     networks:
       - default
       - frontend
+      - backend
 
 networks:
   - network_name: default
   - network_name: frontend
+    external: true
+  - network_name: backend
     external: true
 
 volumes:
