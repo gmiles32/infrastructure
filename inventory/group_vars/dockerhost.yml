@@ -40,7 +40,7 @@ services:
   - vaultwarden
   # - vikunja
   # - portainer-agent
-services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
+services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
 # docker_start
