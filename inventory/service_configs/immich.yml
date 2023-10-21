@@ -4,89 +4,130 @@ containers:
     active: true
     container_name: immich-server
     image: ghcr.io/immich-app/immich-server:v1.82.1
-    command: [ "start.sh", "immich" ]
-    user: 1000:1000
+    command: ["start.sh", "immich"]
     volumes:
       - photos:/usr/src/app/upload
-    # env_file:
-    #   - .env
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      - "DB_HOSTNAME=postgres"
-      - "DB_USERNAME=immich"
-      - "DB_DATABASE_NAME=immich"
+      - "TZ=America/Boise"
+      - "TYPESENSE_ENABLED=true"
+      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "DB_HOSTNAME=immich-postgres"
+      - "DB_USERNAME=postgres"
+      - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
-      - "TYPESENSE_ENABLED=false"
-      - "DISABLE_REVERSE_GEOCODING=true"
-      - "REVERSE_GEOCODING_PRECISION=0"
       - "IMMICH_WEB_URL=http://immich-web:3000"
       - "IMMICH_SERVER_URL=http://immich-server:3001"
-      - "IMMICH_MACHINE_LEARNING_URL=false"
     depends_on:
       - name: redis
-    restart: unless-stopped
+      - name: database
+      - name: typesense
     networks:
-      - backend
       - default
+    restart: unless-stopped
+
   - service_name: immich-microservices
     active: true
     container_name: immich-microservices
     image: ghcr.io/immich-app/immich-server:v1.82.1
-    command:  [ "start.sh", "immich" ]
-    user: 1000:1000
+    command: ["start.sh", "microservices"]
     volumes:
       - photos:/usr/src/app/upload
-    # env_file:
-    #   - .env
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      - "DB_HOSTNAME=postgres"
-      - "DB_USERNAME=immich"
-      - "DB_DATABASE_NAME=immich"
+      - "TZ=America/Boise"
+      - "TYPESENSE_ENABLED=true"
+      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "DB_HOSTNAME=immich-postgres"
+      - "DB_USERNAME=postgres"
+      - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
-      - "TYPESENSE_ENABLED=false"
-      - "DISABLE_REVERSE_GEOCODING=true"
-      - "REVERSE_GEOCODING_PRECISION=0"
       - "IMMICH_WEB_URL=http://immich-web:3000"
       - "IMMICH_SERVER_URL=http://immich-server:3001"
-      - "IMMICH_MACHINE_LEARNING_URL=false"
     depends_on:
       - name: redis
-    restart: unless-stopped
+      - name: database
+      - name: typesense
     networks:
-      - backend
       - default
+    restart: unless-stopped
+
+  - service_name: immich-machine-learning
+    active: true
+    container_name: immich-machine-learning
+    image: ghcr.io/immich-app/immich-machine-learning:v1.82.1
+    volumes:
+      - ./model-cache:/cache
+    environment:
+      - "TZ=America/Boise"
+      - "TYPESENSE_ENABLED=true"
+      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
+      - "DB_PASSWORD={{ immich_pg_password }}"
+      - "DB_HOSTNAME=immich-postgres"
+      - "DB_USERNAME=postgres"
+      - "DB_DATABASE_NAME=immich"
+      - "REDIS_HOSTNAME=immich-redis"
+      - "IMMICH_WEB_URL=http://immich-web:3000"
+      - "IMMICH_SERVER_URL=http://immich-server:3001"
+    networks:
+      - default
+    restart: unless-stopped
 
   - service_name: immich-web
     active: true
     container_name: immich-web
     image: ghcr.io/immich-app/immich-web:v1.82.1
-    user: 1000:1000
-    # env_file:
-    #   - .env
     environment:
-      - "DB_HOSTNAME=postgres"
-      - "DB_USERNAME=immich"
-      - "DB_DATABASE_NAME=immich"
+      - "TZ=America/Boise"
+      - "TYPESENSE_ENABLED=true"
+      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
+      - "DB_HOSTNAME=immich-postgres"
+      - "DB_USERNAME=postgres"
+      - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
-      - "TYPESENSE_ENABLED=false"
-      - "DISABLE_REVERSE_GEOCODING=true"
-      - "REVERSE_GEOCODING_PRECISION=0"
       - "IMMICH_WEB_URL=http://immich-web:3000"
       - "IMMICH_SERVER_URL=http://immich-server:3001"
-      - "IMMICH_MACHINE_LEARNING_URL=false"
-    restart: unless-stopped
     networks:
       - default
+    restart: unless-stopped
+
+  - service_name: typesense
+    active: true
+    container_name: immich-typesense
+    image: typesense/typesense:0.24.1@sha256:9bcff2b829f12074426ca044b56160ca9d777a0c488303469143dd9f8259d4dd
+    environment:
+      - "TYPESENSE_API_KEY={{ immich_tp_api_key }}"
+      - "TYPESENSE_DATA_DIR=/data"
+      # remove this to get debug messages
+      - "GLOG_minloglevel=1"
+    volumes:
+      - ./tsdata:/data
+    networks:
+      - default
+    restart: unless-stopped
 
   - service_name: redis
     active: true
     container_name: immich-redis
-    image: redis:7.2-alpine@sha256:2d44eb73209e5af4118de67e89b01709bfec7cc5a4c1cec29665f6d011c70783
+    image: redis:6.2-alpine@sha256:70a7a5b641117670beae0d80658430853896b5ef269ccf00d1827427e3263fa3
     restart: unless-stopped
+
+  - service_name: database
+    active: true
+    container_name: immich-postgres
+    image: postgres:14-alpine@sha256:28407a9961e76f2d285dc6991e8e48893503cc3836a4755bbc2d40bcc272a441
+    environment:
+      - "POSTGRES_PASSWORD={{ immich_pg_password }}"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=immich"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
     networks:
       - default
+    restart: unless-stopped
 
   - service_name: immich-proxy
     active: true
@@ -95,10 +136,11 @@ containers:
     environment:
       - "IMMICH_WEB_URL=http://immich-web:3000"
       - "IMMICH_SERVER_URL=http://immich-server:3001"
+    ports:
+      - 2283:8080
     depends_on:
       - name: immich-server
       - name: immich-web
-    restart: unless-stopped
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.immich.entrypoints=web"
@@ -114,11 +156,10 @@ containers:
     networks:
       - frontend
       - default
+    restart: unless-stopped
 
 networks:
   - network_name: frontend
-    external: true
-  - network_name: backend
     external: true
   - network_name: default
 

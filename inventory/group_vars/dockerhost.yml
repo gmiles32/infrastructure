@@ -28,7 +28,6 @@ services:
   - traefik
   # - portainer
   - immich
-  - traefik
   - calibre
   - freshrss
   - homepage
