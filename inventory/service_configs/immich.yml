@@ -78,7 +78,7 @@ containers:
   - service_name: immich-web
     active: true
     container_name: immich-web
-    image: ghcr.io/immich-app/immich-web:v1.83.0
+    image: ghcr.io/immich-app/immich-web:v1.84.0
     environment:
       - "TZ=America/Boise"
       - "TYPESENSE_ENABLED=true"
