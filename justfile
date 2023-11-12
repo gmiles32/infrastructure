@@ -3,8 +3,8 @@
 reqs *FORCE:
 	ansible-galaxy install -r requirements.yml {{FORCE}}
 
-configure HOST *TAGS:
-    ansible-playbook -b playbooks/configure.yml -e host={{HOST}} {{TAGS}}
+configure HOST TAGS:
+    ansible-playbook -b playbooks/configure.yml -e host={{HOST}} --tags={{TAGS}}
 
 serv HOST:
     ansible-playbook -b playbooks/start_docker.yml -e host={{HOST}}
