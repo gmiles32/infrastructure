@@ -37,6 +37,8 @@ services:
   - vaultwarden
   - stirling-pdf
   - netboot
+  - vikunja
+  # - postgres
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 

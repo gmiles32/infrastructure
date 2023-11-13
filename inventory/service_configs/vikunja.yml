@@ -9,15 +9,15 @@ containers:
       - "GUID=1000"
       - "VIKUNJA_SERVICE_JWTSECRET={{ vikunja_jwt_secret }}"
       - "DATABASE_PASSWORD={{ vikunja_pg_password }}"
-      - "MAILER_USERNAME={{ smtp_username }}"
-      - "MAILER_PASSWORD={{ smtp_password }}"
-      - "MAILER_FROMEMAIL={{ smtp_email }}"
+      # - "MAILER_USERNAME={{ smtp_username }}"
+      # - "MAILER_PASSWORD={{ smtp_password }}"
+      # - "MAILER_FROMEMAIL={{ smtp_email }}"
     volumes: 
       - ./files:/app/vikunja/files
       - ./config.yml:/etc/vikunja/config.yml:ro
     networks:
       - frontend
-      - backend
+      - default
     restart: unless-stopped
     labels:   
       - "traefik.enable=true"
@@ -46,12 +46,26 @@ containers:
       - "traefik.docker.network=frontend"
     networks:
       - frontend
+      - default
+    restart: unless-stopped
+
+  - service_name: database
+    active: true
+    container_name: vikunja-postgres
+    image: postgres:13
+    environment:
+      - "POSTGRES_PASSWORD={{ vikunja_pg_password }}"
+      - "POSTGRES_USER=vikunja"
+      - "POSTGRES_DB=vikunja"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    networks:
+      - default
     restart: unless-stopped
 
 networks:
   - network_name: frontend
     external: true
-  - network_name: backend
-    external: true
+  - network_name: default
 
 volumes: []
