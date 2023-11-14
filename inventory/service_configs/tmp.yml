@@ -60,7 +60,7 @@ containers:
   - service_name: immich-web
     active: true
     container_name: immich-web
-    image: ghcr.io/immich-app/immich-web:v1.85.0
+    image: ghcr.io/immich-app/immich-web:v1.86.0
     user: 1000:1000
     # env_file:
     #   - .env
