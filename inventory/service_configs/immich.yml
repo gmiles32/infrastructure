@@ -3,7 +3,7 @@ containers:
   - service_name: immich-server
     active: true
     container_name: immich-server
-    image: ghcr.io/immich-app/immich-server:v1.88.1
+    image: ghcr.io/immich-app/immich-server:v1.88.2
     command: ["start.sh", "immich"]
     volumes:
       - photos:/usr/src/app/upload
@@ -30,7 +30,7 @@ containers:
   - service_name: immich-microservices
     active: true
     container_name: immich-microservices
-    image: ghcr.io/immich-app/immich-server:v1.88.1
+    image: ghcr.io/immich-app/immich-server:v1.88.2
     command: ["start.sh", "microservices"]
     volumes:
       - photos:/usr/src/app/upload
