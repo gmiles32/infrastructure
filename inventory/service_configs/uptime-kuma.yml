@@ -2,7 +2,7 @@ compose_schema_version: '3.3'
 containers:
   - service_name: uptime-kuma
     active: true
-    image: louislam/uptime-kuma:1.23.6@sha256:ee1841f70126912f67896225a6d78d1bbd35d0e40911dc80c4d7746788d2fab2
+    image: louislam/uptime-kuma:1.23.7@sha256:658b77607d872913cc1217e43e2288d35dd712c3d943c7c21fab0dfbd471b8ad
     container_name: uptime-kuma
     volumes:
       - ./data:/app/data
