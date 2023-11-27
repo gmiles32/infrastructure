@@ -25,6 +25,21 @@ containers:
       - name: typesense
     networks:
       - default
+      - frontend
+    ports:
+      - 2283:3001
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.immich.entrypoints=web"
+      - "traefik.http.routers.immich.rule=Host(`immich.{{ domain }}`)"
+      - "traefik.http.middlewares.immich-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.immich.middlewares=immich-https-redirect"
+      - "traefik.http.routers.immich-secure.entrypoints=websecure"
+      - "traefik.http.routers.immich-secure.rule=Host(`immich.{{ domain }}`)"
+      - "traefik.http.routers.immich-secure.tls=true"
+      - "traefik.http.routers.immich-secure.service=immich"
+      - "traefik.http.services.immich.loadbalancer.server.port=3001"
+      - "traefik.docker.network=frontend"
     restart: unless-stopped
 
   - service_name: immich-microservices
@@ -76,7 +91,7 @@ containers:
     restart: unless-stopped
 
   - service_name: immich-web
-    active: true
+    active: false
     container_name: immich-web
     image: ghcr.io/immich-app/immich-web:v1.87.0
     environment:
@@ -130,7 +145,7 @@ containers:
     restart: unless-stopped
 
   - service_name: immich-proxy
-    active: true
+    active: false
     container_name: immich-proxy
     image: ghcr.io/immich-app/immich-proxy:v1.87.0
     environment:
