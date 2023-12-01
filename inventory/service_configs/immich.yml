@@ -133,7 +133,7 @@ containers:
   - service_name: database
     active: true
     container_name: immich-postgres
-    image: postgres:14-alpine@sha256:50d9be76e9a90da4c781554955e0ffc79d9d5c4226838e64b36aacc97cbc35ad
+    image: postgres:14-alpine@sha256:c31475a69b9d15ff199e60c9fe9d69971249b35a8b4b724aaa29846f0f87dcb9
     environment:
       - "POSTGRES_PASSWORD={{ immich_pg_password }}"
       - "POSTGRES_USER=postgres"
