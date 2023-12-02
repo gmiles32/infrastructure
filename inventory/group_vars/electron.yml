@@ -24,8 +24,8 @@ interface: ens18
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
   # - portainer
-  - uptime-kuma
-  - netboot
+  # - uptime-kuma
+  # - netboot
 services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
 
 # docker_start

@@ -6,11 +6,11 @@ package_list:
   - name: git
   - name: firewalld
   - name: nfs
-    apt: nfs-commons
+    apt: nfs-common
     dnf: nfs-utils
     yum: nfs-utils
   - name: wget
-  - name: python-firewall
+  - name: python3-firewall
 package_update_cache: yes
 
 # geerlingguy.pip
@@ -74,6 +74,3 @@ ports:
   - port_number: "69"
     protocol: "udp"
 commands: []
-  # - "docker run -d --name=protonmail-bridge -v protonmail:/root -p \
-  #    1025:25/tcp -p 1143:143/tcp --restart=unless-stopped --network=backend \
-  #    shenxn/protonmail-bridge"

@@ -11,7 +11,7 @@
     - name: Check if reboot it required
       stat:
         path: /var/run/reboot-required
-        get_md5: no
+          #        get_md5: no
       register: reboot_required_file
 
     - name: Send Discord notification if reboot is required
@@ -47,7 +47,7 @@
     - name: Check if reboot it required
       stat:
         path: /var/run/reboot-required
-        get_md5: no
+          #        get_md5: no
       register: reboot_required_file
 
     - name: Send Discord notification if reboot is required
