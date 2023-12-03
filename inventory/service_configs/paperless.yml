@@ -19,10 +19,14 @@ containers:
     depends_on:
       - name: broker
     healthcheck:
-      test: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8000"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      - name: test
+        value: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8000"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 10s
+      - name: retries
+        value: 5
     volumes:
       - ./data:/usr/src/paperless/data
       - media:/usr/src/paperless/media

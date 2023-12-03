@@ -9,10 +9,14 @@ containers:
     volumes:
       - './influxdb:/var/lib/influxdb2'
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 20
+      - name: test
+        value: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      - name: interval
+        value: 5s
+      - name: timeout
+        value: 10s
+      - name: retries
+        value: 20
     networks:
       - default
 
@@ -30,11 +34,16 @@ containers:
       - name: influxdb
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
-      interval: 5s
-      timeout: 10s
-      retries: 20
-      start_period: 10s
+      - name: test
+        value: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      - name: interval
+        value: 5s
+      - name: timeout
+        value: 10s
+      - name: retries
+        value: 20
+      - name: start_period
+        value: 10s
     networks:
       - default
       - frontend
