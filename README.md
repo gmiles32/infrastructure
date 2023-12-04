@@ -12,6 +12,12 @@ For those who have been using Ansible, you might be wondering 'hey, why would yo
 I am not a professional - in fact I am a chemist by trade. So this is probably not the best set up by any means. Take the parts you like, throw away the parts you don't. If you want to use this repo as a starting point for your homelab, by all means that is why I made it public. But I do not guarantee that this will work for your particular needs.
 
 # Usage
+After cloning this repository, make sure to load submodules:
+
+```bash
+git submodule update --init --recursive
+```
+
 Before doing anything, make sure to set up your own `ansible-vault` with the variables you will need. Set a vault password, and put into a file named `.vault_pass`.
 
 To install all the requirements to run these playbooks, use the following command:

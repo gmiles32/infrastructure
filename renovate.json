@@ -6,6 +6,7 @@
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate Dashboard",
     "labels": ["renovatebot"],
+    "automerge": true,
     "ansible": {
       "fileMatch": [".ya?ml$"]
     },
