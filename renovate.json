@@ -6,10 +6,11 @@
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate Dashboard",
     "labels": ["renovatebot"],
-    "automerge": true,
     "ansible": {
       "fileMatch": [".ya?ml$"]
     },
+    "automergeStrategy": "merge-commit",
+    "ignoreTests": true,
     "hostRules": [
       {
         "matchHost": "docker.io",
@@ -20,8 +21,7 @@
         {
           "description": "Automerge non-major updates",
           "matchUpdateTypes": ["minor", "patch", "digest"],
-          "automerge": true,
-          "ignoreTests": true
+          "automerge": true
         },
         {
           "description": "Require dashboard approval for major updates",
