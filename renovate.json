@@ -18,14 +18,9 @@
     "packageRules": [
         {
           "description": "Automerge non-major updates",
-          "matchUpdateTypes": ["minor", "patch"],
+          "matchUpdateTypes": ["minor", "patch", "digest"],
           "automerge": true,
           "ignoreTests": true
-        },
-        {
-          "description": "Only perform minor and patch upgrades for db and other foundational services",
-          "matchPackageNames": ["postgres","redis","typesense"],
-          "matchUpdateTypes": ["minor", "patch", "digest"]
         },
         {
           "description": "Require dashboard approval for major updates",
