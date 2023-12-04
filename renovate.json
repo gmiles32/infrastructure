@@ -30,11 +30,8 @@
         {
           "description": "Require dashboard approval for major updates",
           "matchUpdateTypes": ["major"],
-          "dependencyDashboardApproval": true        
-        },
-        {
-          "description": "General package rules",
-          "recreateWhen": "never"
+          "dependencyDashboardApproval": true,
+          "recreateWhen": "never"      
         }
     ]
   }
