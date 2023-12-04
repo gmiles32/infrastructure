@@ -1,7 +1,8 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-      "config:base"
+      "config:recommended",
+      ":rebaseStalePrs"
     ],
     "dependencyDashboard": true,
     "dependencyDashboardTitle": "Renovate Dashboard",
@@ -19,9 +20,15 @@
     ],
     "packageRules": [
         {
+          "description": "Prevent Immich container automerge (under active development)",
+          "matchPackageNames": ["^immich"],
+          "automerge": false
+        },
+        {
           "description": "Automerge non-major updates",
           "matchUpdateTypes": ["minor", "patch", "digest"],
-          "automerge": true
+          "automerge": true,
+          "automergeType": "branch"
         },
         {
           "description": "Require dashboard approval for major updates",
