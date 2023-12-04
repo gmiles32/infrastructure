@@ -10,7 +10,7 @@ serv HOST:
     ansible-playbook -b playbooks/start_docker.yml -e host={{HOST}}
 
 ssh HOST:
-    ansible-playbook -b playbooks/ssh.yml -e host={{HOST}} -k
+    ansible-playbook -b playbooks/ssh.yml -e host={{HOST}} -k -K
 
 update:
     ansible-playbook -b playbooks/update.yml

@@ -30,6 +30,15 @@ containers:
       - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
       - "traefik.docker.network=frontend"
       - "traefik.http.routers.syncthing-secure.middlewares=authelia@docker"
+    healthcheck:
+      - name: test
+        value: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8384"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 10s
+      - name: retries
+        value: 5
 
 networks:
   - network_name: frontend

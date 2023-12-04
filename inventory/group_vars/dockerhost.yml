@@ -36,7 +36,7 @@ services:
   - uptime-kuma
   - vaultwarden
   - stirling-pdf
-  - netboot
+  # - netboot
   - vikunja
   - actual
 services_config_path: ../inventory/service_configs

@@ -129,6 +129,9 @@ containers:
     container_name: immich-redis
     image: redis:6.2-alpine@sha256:60e49e22fa5706cd8df7d5e0bc50ee9bab7c608039fa653c4d961014237cca46
     restart: unless-stopped
+    healthcheck:
+      - name: test
+        value: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
   - service_name: database
     active: true
@@ -143,6 +146,17 @@ containers:
     networks:
       - default
     restart: unless-stopped
+    healthcheck:
+      - name: test
+        value: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 60s
+      - name: retries
+        value: 5
+      - name: start_period
+        value: 80s
 
   - service_name: immich-proxy
     active: false

@@ -9,6 +9,9 @@ containers:
       - redisdata:/data
     networks:
       - default
+    healthcheck:
+      - name: test
+        value: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
   - service_name: webserver
     active: true
