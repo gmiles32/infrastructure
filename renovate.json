@@ -21,6 +21,11 @@
           "matchUpdateTypes": ["minor", "patch"],
           "automerge": true,
           "ignoreTests": true
+        },
+        {
+          "description": "Only perform minor and patch updrades for db and other foundational services",
+          "matchPackageNames": ["postgres","redis","typesense"],
+          "matchUpdateTypes": ["minor", "patch", "digest"]
         }
     ]
   }
