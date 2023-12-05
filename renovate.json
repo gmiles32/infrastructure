@@ -12,6 +12,7 @@
     },
     "automergeStrategy": "merge-commit",
     "ignoreTests": true,
+    "platformAutomerge": true,
     "hostRules": [
       {
         "matchHost": "docker.io",

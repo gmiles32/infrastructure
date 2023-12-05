@@ -11,3 +11,8 @@ package_list:
     yum: nfs-utils
   - name: wget
 package_update_cache: yes
+
+# geerlingguy.pip
+pip_install_packages:
+  - name: requests
+  - name: firewall
