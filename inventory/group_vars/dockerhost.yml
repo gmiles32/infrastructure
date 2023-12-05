@@ -33,7 +33,7 @@ services:
   - paperless
   - scrutiny
   - syncthing
-  - uptime-kuma
+  # - uptime-kuma
   - vaultwarden
   - stirling-pdf
   # - netboot

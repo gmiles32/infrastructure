@@ -29,15 +29,6 @@ containers:
       - "traefik.http.routers.calibre-web-secure.middlewares=authelia@docker"
     networks:
       - frontend
-    healthcheck:
-      - name: test
-        value: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:8083"]
-      - name: interval
-        value: 30s
-      - name: timeout
-        value: 10s
-      - name: retries
-        value: 5
 
 networks:
   - network_name: frontend

@@ -23,11 +23,17 @@ interface: ens18
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
-  - monitoring
   - netboot
 services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
 
 # docker_start
 docker_networks: []
-ports: []
+ports:
+    # Netboot.xyz
+  - port_number: "69"
+    protocol: "udp"
+  - port_number: "8080"
+    protocol: "tcp"
+  - port_number: "3000"
+    protocol: "tcp"
 commands: []

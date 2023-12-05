@@ -10,34 +10,34 @@ containers:
       - PGID=1000
       - TZ=America/Boise
       # - MENU_VERSION=1.9.9 #optional
-      - PORT_RANGE=30000:30010 #optional
-      - SUBFOLDER=/ #optional
+      # - PORT_RANGE=30000:30010 #optional
+      # - SUBFOLDER=/ #optional
     volumes:
       - ./config:/config
       - ./assets:/assets #optional
     ports:
-      # - 3000:3000
+      - 3000:3000
       - 69:69/udp
-      # - 8080:80 #optional
+      - 8080:80 #optional
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.netbootxyz.entrypoints=web"
-      - "traefik.http.routers.netbootxyz.rule=Host(`netboot.{{ domain }}`)"
-      - "traefik.http.middlewares.netbootxyz-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-https-redirect"
-      - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
-      - "traefik.http.routers.netbootxyz-secure.rule=Host(`netboot.{{ domain }}`)"
-      - "traefik.http.routers.netbootxyz-secure.tls=true"
-      - "traefik.http.routers.netbootxyz-secure.service=netbootxyz"
-      - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
-      - "traefik.docker.network=frontend"
-      - "traefik.http.routers.netbootxyz-secure.middlewares=authelia@docker"
-    networks:
-      - frontend
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.netbootxyz.entrypoints=web"
+    #   - "traefik.http.routers.netbootxyz.rule=Host(`netboot.{{ domain }}`)"
+    #   - "traefik.http.middlewares.netbootxyz-https-redirect.redirectscheme.scheme=https"
+    #   - "traefik.http.routers.netbootxyz.middlewares=netbootxyz-https-redirect"
+    #   - "traefik.http.routers.netbootxyz-secure.entrypoints=websecure"
+    #   - "traefik.http.routers.netbootxyz-secure.rule=Host(`netboot.{{ domain }}`)"
+    #   - "traefik.http.routers.netbootxyz-secure.tls=true"
+    #   - "traefik.http.routers.netbootxyz-secure.service=netbootxyz"
+    #   - "traefik.http.services.netbootxyz.loadbalancer.server.port=3000"
+    #   - "traefik.docker.network=frontend"
+    #   - "traefik.http.routers.netbootxyz-secure.middlewares=authelia@docker"
+    # networks:
+    #   - frontend
 
-networks:
-  - network_name: frontend
-    external: true
+networks: []
+  # - network_name: frontend
+  #   external: true
 
 volumes: []

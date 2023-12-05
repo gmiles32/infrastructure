@@ -1,3 +1,0 @@
-services:
-  container_name: nginx
-  image: nginx:1.25.2-alpine-perl

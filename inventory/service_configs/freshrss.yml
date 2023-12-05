@@ -26,15 +26,6 @@ containers:
       - "traefik.http.services.freshrss.loadbalancer.server.port=80"
       - "traefik.docker.network=frontend"
       - "traefik.http.routers.freshrss-secure.middlewares=authelia@docker"
-    healthcheck:
-      - name: test
-        value: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:80"]
-      - name: interval
-        value: 30s
-      - name: timeout
-        value: 10s
-      - name: retries
-        value: 5
 
 networks:
   - network_name: frontend
