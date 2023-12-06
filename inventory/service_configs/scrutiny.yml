@@ -2,7 +2,7 @@ compose_schema_version: '2.4'
 containers:
   - service_name: influxdb
     active: true
-    image: influxdb:2.7
+    image: influxdb:2.7@sha256:e0c66207e3f5cc16bc0730dc52a7fa81dbba6e366fe6ddf3daab0c3008af64c9
     container_name: scrutiny-db
     ports:
       - '8086:8086'
@@ -22,7 +22,7 @@ containers:
 
   - service_name: web
     active: true
-    image: 'ghcr.io/analogj/scrutiny:master-web'
+    image: 'ghcr.io/analogj/scrutiny:master-web@sha256:fc8ea13cbf0a76d6425d5cd74fe0c6ace475730a94eb2fcfa1a0fabe3262fd94'
     container_name: scrutiny-web
     ports:
       - '8080:8080'
