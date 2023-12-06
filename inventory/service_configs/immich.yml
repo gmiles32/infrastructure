@@ -3,7 +3,7 @@ containers:
   - service_name: immich-server
     active: true
     container_name: immich-server
-    image: ghcr.io/immich-app/immich-server:v1.89.0
+    image: ghcr.io/immich-app/immich-server:v1.89.0@sha256:b5aa4023c63b904136e859b4c3f4c1d34272b7c5f7ee65f50f12378d6039e9e7
     command: ["start.sh", "immich"]
     volumes:
       - photos:/usr/src/app/upload
@@ -45,7 +45,7 @@ containers:
   - service_name: immich-microservices
     active: true
     container_name: immich-microservices
-    image: ghcr.io/immich-app/immich-server:v1.89.0
+    image: ghcr.io/immich-app/immich-server:v1.89.0@sha256:b5aa4023c63b904136e859b4c3f4c1d34272b7c5f7ee65f50f12378d6039e9e7
     command: ["start.sh", "microservices"]
     volumes:
       - photos:/usr/src/app/upload
@@ -72,7 +72,7 @@ containers:
   - service_name: immich-machine-learning
     active: true
     container_name: immich-machine-learning
-    image: ghcr.io/immich-app/immich-machine-learning:v1.89.0
+    image: ghcr.io/immich-app/immich-machine-learning:v1.89.0@sha256:e76febac59b0377cb08dbbd683bf147f9720bbf6f7da86f22b7cfbec91237a72
     volumes:
       - ./model-cache:/cache
     environment:
@@ -93,7 +93,7 @@ containers:
   - service_name: immich-web
     active: false
     container_name: immich-web
-    image: ghcr.io/immich-app/immich-web:v1.87.0
+    image: ghcr.io/immich-app/immich-web:v1.87.0@sha256:2bef28adbcc60a2ee5dee8cafe109e3d5c6b7bca88d90acdd3eec376200a6d6e
     environment:
       - "TZ=America/Boise"
       - "TYPESENSE_ENABLED=true"
@@ -161,7 +161,7 @@ containers:
   - service_name: immich-proxy
     active: false
     container_name: immich-proxy
-    image: ghcr.io/immich-app/immich-proxy:v1.87.0
+    image: ghcr.io/immich-app/immich-proxy:v1.87.0@sha256:9b60f2a6c9492306d4a2d182ac9274de6d9df6e6680ca7d55c8fd8348adcdaa6
     environment:
       - "IMMICH_WEB_URL=http://immich-web:3000"
       - "IMMICH_SERVER_URL=http://immich-server:3001"

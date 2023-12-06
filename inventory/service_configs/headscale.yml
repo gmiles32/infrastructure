@@ -2,7 +2,7 @@ compose_scheme_version: '3'
 containers: 
   - service_name: headscale
     active: true
-    image: headscale/headscale:latest
+    image: headscale/headscale:latest@sha256:aadf29a875bb2ffdf6579869e5759935f7a64b9fd19fcea9d5385c5d7220dc7b
     pull_policy: always
     container_name: headscale
     restart: unless-stopped
