@@ -90,25 +90,6 @@ containers:
       - default
     restart: unless-stopped
 
-  - service_name: immich-web
-    active: false
-    container_name: immich-web
-    image: ghcr.io/immich-app/immich-web:v1.87.0@sha256:2bef28adbcc60a2ee5dee8cafe109e3d5c6b7bca88d90acdd3eec376200a6d6e
-    environment:
-      - "TZ=America/Boise"
-      - "TYPESENSE_ENABLED=true"
-      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
-      - "DB_PASSWORD={{ immich_pg_password }}"
-      - "DB_HOSTNAME=immich-postgres"
-      - "DB_USERNAME=postgres"
-      - "DB_DATABASE_NAME=immich"
-      - "REDIS_HOSTNAME=immich-redis"
-      - "IMMICH_WEB_URL=http://immich-web:3000"
-      - "IMMICH_SERVER_URL=http://immich-server:3001"
-    networks:
-      - default
-    restart: unless-stopped
-
   - service_name: typesense
     active: true
     container_name: immich-typesense
@@ -157,35 +138,6 @@ containers:
         value: 5
       - name: start_period
         value: 80s
-
-  - service_name: immich-proxy
-    active: false
-    container_name: immich-proxy
-    image: ghcr.io/immich-app/immich-proxy:v1.87.0@sha256:9b60f2a6c9492306d4a2d182ac9274de6d9df6e6680ca7d55c8fd8348adcdaa6
-    environment:
-      - "IMMICH_WEB_URL=http://immich-web:3000"
-      - "IMMICH_SERVER_URL=http://immich-server:3001"
-    ports:
-      - 2283:8080
-    depends_on:
-      - name: immich-server
-      - name: immich-web
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.immich.entrypoints=web"
-      - "traefik.http.routers.immich.rule=Host(`immich.{{ domain }}`)"
-      - "traefik.http.middlewares.immich-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.immich.middlewares=immich-https-redirect"
-      - "traefik.http.routers.immich-secure.entrypoints=websecure"
-      - "traefik.http.routers.immich-secure.rule=Host(`immich.{{ domain }}`)"
-      - "traefik.http.routers.immich-secure.tls=true"
-      - "traefik.http.routers.immich-secure.service=immich"
-      - "traefik.http.services.immich.loadbalancer.server.port=8080"
-      - "traefik.docker.network=frontend"
-    networks:
-      - frontend
-      - default
-    restart: unless-stopped
 
 networks:
   - network_name: frontend
