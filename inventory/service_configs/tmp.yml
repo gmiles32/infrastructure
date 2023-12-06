@@ -1,0 +1,2 @@
+  - container_name: mongodb
+    image: mongo:7.0.3
