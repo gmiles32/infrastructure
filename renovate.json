@@ -12,6 +12,7 @@
     },
     "automergeStrategy": "merge-commit",
     "ignoreTests": true,
+    "pinDigests": true,
     "hostRules": [
       {
         "matchHost": "docker.io",
@@ -34,7 +35,8 @@
           "description": "Require dashboard approval for major updates",
           "matchUpdateTypes": ["major"],
           "dependencyDashboardApproval": true,
-          "recreateWhen": "never"      
+          "recreateWhen": "never",
+          "prCreation": "approval"
         }
     ]
   }
