@@ -71,17 +71,17 @@ containers:
     networks:
       - default
     restart: unless-stopped
-    # healthcheck:
-    #   - name: test
-    #     value: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
-    #   - name: interval
-    #     value: 30s
-    #   - name: timeout
-    #     value: 60s
-    #   - name: retries
-    #     value: 5
-    #   - name: start_period
-    #     value: 80s
+    healthcheck:
+      - name: test
+        value: ["CMD-SHELL", "pg_isready", "-d", "db_prod"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 60s
+      - name: retries
+        value: 5
+      - name: start_period
+        value: 80s
 
 networks:
   - network_name: frontend
