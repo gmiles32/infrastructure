@@ -39,6 +39,7 @@ services:
   # - netboot
   - vikunja
   - actual
+  - n8n
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
