@@ -1,0 +1,98 @@
+compose_schema_version: "3"
+
+containers:
+  - service_name: prometheus
+    active: true
+    image: prom/prometheus:v2.48.0
+    container_name: prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    user: 1000:1000
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - ./prom_data:/prometheus
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.entrypoints=web"
+      - "traefik.http.routers.prometheus.rule=Host(`prom.{{ domain }}`)"
+      - "traefik.http.middlewares.prometheus-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.prometheus.middlewares=prometheus-https-redirect"
+      - "traefik.http.routers.prometheus-secure.entrypoints=websecure"
+      - "traefik.http.routers.prometheus-secure.rule=Host(`prom.{{ domain }}`)"
+      - "traefik.http.routers.prometheus-secure.tls=true"
+      - "traefik.http.routers.prometheus-secure.service=prometheus"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+      - "traefik.docker.network=frontend"
+      # - "traefik.http.routers.prometheus-secure.middlewares=authelia@docker"
+    networks:
+      - frontend
+      - default
+
+  - service_name: grafana
+    active: true
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD={{ gf_admin_password }}
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.entrypoints=web"
+      - "traefik.http.routers.grafana.rule=Host(`grafana.{{ domain }}`)"
+      - "traefik.http.middlewares.grafana-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.grafana.middlewares=grafana-https-redirect"
+      - "traefik.http.routers.grafana-secure.entrypoints=websecure"
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.{{ domain }}`)"
+      - "traefik.http.routers.grafana-secure.tls=true"
+      - "traefik.http.routers.grafana-secure.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+      - "traefik.docker.network=frontend"
+      # - "traefik.http.routers.grafana-secure.middlewares=authelia@docker"
+    networks:
+      - frontend
+      - default
+
+  - service_name: node_exporter
+    active: true
+    image: quay.io/prometheus/node-exporter:latest
+    container_name: node_exporter
+    command:
+      - '--path.rootfs=/host'
+    networks:
+      - default
+    privileged: true
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+
+  - service_name: cadvisor
+    active: true
+    image: gcr.io/cadvisor/cadvisor
+    devices:
+      - /dev/kmsg
+    privileged: true
+    container_name: cadvisor
+    volumes:
+      - '/dev/disk/:/dev/disk:ro'
+      - '/var/lib/docker/:/var/lib/docker:ro'
+      - '/sys:/sys:ro'
+      - '/var/run:/var/run:ro'
+      - '/:/rootfs:ro'
+    networks:
+      - default
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: default
+
+volumes: []
