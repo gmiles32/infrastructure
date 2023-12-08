@@ -22,7 +22,7 @@
     "packageRules": [
         {
           "description": "Prevent Immich container automerge (under active development)",
-          "matchPackageNames": ["^immich"],
+          "matchPackageNames": ["^ghcr.io/immich"],
           "automerge": false
         },
         {
