@@ -40,7 +40,7 @@ services:
   - vikunja
   - actual
   - n8n
-  # - grafana
+  - grafana
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
