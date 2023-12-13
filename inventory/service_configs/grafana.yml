@@ -91,6 +91,37 @@ containers:
     networks:
       - default
 
+  - service_name: influxdb
+    active: false
+    image: influxdb:2.7.4
+    container_name: influxdb
+    user: 1000:1000
+    restart: unless-stopped
+    ports:
+      - 8087:8086
+    volumes:
+      - './influxdb:/var/lib/influxdb2'
+    networks:
+      - default
+      - frontend
+    environment:
+      - 'DOCKER_INFLUXDB_INIT_USERNAME=admin'
+      - 'DOCKER_INFLUXDB_INIT_PASSWORD={{ influxdb_password }}'
+      - 'DOCKER_INFLUXDB_INIT_ORG={{ influxdb_org }}'
+      - 'DOCKER_INFLUXDB_INIT_BUCKET={{ influxdb_bucket }}'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.influxdb.entrypoints=web"
+      - "traefik.http.routers.influxdb.rule=Host(`influxdb.{{ domain }}`)"
+      - "traefik.http.middlewares.influxdb-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.influxdb.middlewares=influxdb-https-redirect"
+      - "traefik.http.routers.influxdb-secure.entrypoints=websecure"
+      - "traefik.http.routers.influxdb-secure.rule=Host(`influxdb.{{ domain }}`)"
+      - "traefik.http.routers.influxdb-secure.tls=true"
+      - "traefik.http.routers.influxdb-secure.service=influxdb"
+      - "traefik.http.services.influxdb.loadbalancer.server.port=8087"
+      - "traefik.docker.network=frontend"
+
 networks:
   - network_name: frontend
     external: true
