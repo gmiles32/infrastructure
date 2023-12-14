@@ -29,11 +29,8 @@ services_config_path: /home/gabe/Projects/infrastructure/inventory/service_confi
 # docker_start
 docker_networks: []
 ports:
-    # Netboot.xyz
-  - port_number: "69"
-    protocol: "udp"
-  - port_number: "8080"
+  # Grafana
+  - port_number: 3000
     protocol: "tcp"
-  - port_number: "3000"
-    protocol: "tcp"
+    
 commands: []

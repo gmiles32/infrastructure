@@ -14,23 +14,21 @@ containers:
     volumes:
       - ./prometheus:/etc/prometheus
       - ./prom_data:/prometheus
+    # labels: 
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.prometheus.entrypoints=web"
+    #   - "traefik.http.routers.prometheus.rule=Host(`prom-dh.{{ domain }}`)"
+    #   - "traefik.http.middlewares.prometheus-https-redirect.redirectscheme.scheme=https"
+    #   - "traefik.http.routers.prometheus.middlewares=prometheus-https-redirect"
+    #   - "traefik.http.routers.prometheus-secure.entrypoints=websecure"
+    #   - "traefik.http.routers.prometheus-secure.rule=Host(`prom-dh.{{ domain }}`)"
+    #   - "traefik.http.routers.prometheus-secure.tls=true"
+    #   - "traefik.http.routers.prometheus-secure.service=prometheus"
+    #   - "traefik.http.services.prometheus.loadbalancer.server.port=9090"
+    #   - "traefik.docker.network=frontend"
+      # - "traefik.http.routers.prometheus-secure.middlewares=authelia@docker"
     networks:
-      - default
-
-  - service_name: grafana
-    active: true
-    image: grafana/grafana@sha256:e3e9c2b5776fe3657f4954dfa91579224f98a0316f51d431989b15425e95530f
-    container_name: grafana
-    user: 1000:1000
-    ports:
-      - 3000:3000
-    restart: unless-stopped
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD={{ gf_admin_password }}
-    volumes:
-      - ./grafana:/var/lib/grafana
-    networks:
+      # - frontend
       - default
 
   - service_name: node_exporter
@@ -39,13 +37,13 @@ containers:
     container_name: node_exporter
     command:
       - '--path.rootfs=/host'
+    networks:
+      - default
     privileged: true
     pid: host
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
-    networks:
-      - default
 
   - service_name: cadvisor
     active: true
@@ -63,25 +61,9 @@ containers:
     networks:
       - default
 
-  - service_name: influxdb
-    active: false
-    image: influxdb:2.7.4
-    container_name: influxdb
-    user: 1000:1000
-    restart: unless-stopped
-    ports:
-      - 8087:8086
-    volumes:
-      - './influxdb:/var/lib/influxdb2'
-    environment:
-      - 'DOCKER_INFLUXDB_INIT_USERNAME=admin'
-      - 'DOCKER_INFLUXDB_INIT_PASSWORD={{ influxdb_password }}'
-      - 'DOCKER_INFLUXDB_INIT_ORG={{ influxdb_org }}'
-      - 'DOCKER_INFLUXDB_INIT_BUCKET={{ influxdb_bucket }}'
-    default:
-      - default
-
 networks:
+  # - network_name: frontend
+  #   external: true
   - network_name: default
 
 volumes: []
