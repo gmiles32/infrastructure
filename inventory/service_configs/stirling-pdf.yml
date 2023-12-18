@@ -3,7 +3,7 @@ compose_schema_version: "3.3"
 containers:
   - service_name: stirling-pdf
     active: true
-    image: frooodle/s-pdf:0.17.1@sha256:7d24832b4128aeb0b5068ac7f0aa9b0513d73df3cb6c4812febd65ff2876a966 
+    image: frooodle/s-pdf:0.17.2@sha256:991a952282396efec98ae9979c292e706dcbba5d8cc8464b9dbd1e47b4fd0ef5 
     container_name: stirling-pdf
     restart: unless-stopped
     volumes:
