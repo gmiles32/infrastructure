@@ -1,0 +1,53 @@
+---
+compose_schema_version: "3.8"
+
+containers:
+  - service_name: librum
+    active: true
+    image: librum
+    # hostname: librum
+    container_name: librum
+    user: 1000:1000
+    ports:
+      - 5000:5000
+    networks:
+      - default
+      - frontend
+    volumes:
+      - librum:/var/lib/librum-server/librum_storage
+    environment:
+      - JWTValidIssuer=exampleIssuer
+      - JWTKey=exampleOfALongSecretToken
+      - SMTPEndpoint=smtp.example.com
+      - SMTPUsername=mailuser123
+      - SMTPPassword=smtpUserPassword123
+      - SMTPMailFrom=mailuser123@example.com
+      - DBConnectionString=Server=mariadb;port=3306;Database=librum;Uid=librum;Pwd=mariadb;
+      - AdminEmail=admin@example.com
+      - AdminPassword=strongPassword123
+    restart: unless-stopped
+    depends_on:
+      - librum_db
+
+  - service_name: librum-db
+    active: true
+    image: mariadb:11.2.2
+    # hostname: mariadb
+    container_name: librum-db
+    networks:
+      - default
+    volumes:
+      - librum_db:/var/lib/mysql
+    environment:
+      - MARIADB_USER=librum
+      - MARIADB_PASSWORD=mariadb
+      - MARIADB_DATABASE=librum
+      - MARIADB_ROOT_PASSWORD=mariadb
+    restart: unless-stopped
+
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: default
+
+volumes: []
