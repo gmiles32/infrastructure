@@ -48,15 +48,6 @@ containers:
       - frontend
       - default
     restart: unless-stopped
-    healthcheck:
-      - name: test
-        value: ["CMD", "curl", "-fs", "-S", "--max-time", "2", "http://localhost:80"]
-      - name: interval
-        value: 30s
-      - name: timeout
-        value: 10s
-      - name: retries
-        value: 5
 
   - service_name: database
     active: true
