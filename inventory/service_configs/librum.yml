@@ -1,6 +1,4 @@
----
 compose_schema_version: "3.8"
-
 containers:
   - service_name: librum
     active: true
@@ -8,26 +6,39 @@ containers:
     # hostname: librum
     container_name: librum
     user: 1000:1000
-    ports:
-      - 5000:5000
+    # ports:
+    #   - 5000:5000
     networks:
       - default
       - frontend
     volumes:
-      - librum:/var/lib/librum-server/librum_storage
+      - ./librum:/var/lib/librum-server/librum_storage
     environment:
-      - JWTValidIssuer=exampleIssuer
-      - JWTKey=exampleOfALongSecretToken
-      - SMTPEndpoint=smtp.example.com
-      - SMTPUsername=mailuser123
-      - SMTPPassword=smtpUserPassword123
-      - SMTPMailFrom=mailuser123@example.com
-      - DBConnectionString=Server=mariadb;port=3306;Database=librum;Uid=librum;Pwd=mariadb;
-      - AdminEmail=admin@example.com
-      - AdminPassword=strongPassword123
+      # - JWTValidIssuer=exampleIssuer
+      - JWTKey={{ librum_jwt_secret }}
+      - SMTPEndpoint={{ smtp_endpoint }}
+      - SMTPUsername={{ smtp_username }}
+      - SMTPPassword={{ smtp_password }}
+      - SMTPMailFrom={{ librum_smtp_email }}
+      - 'DBConnectionString=Server=librum-db;port=3306;Database=librum;Uid=librum;Pwd={{ librum_mdb_passwd }};'
+      - AdminEmail={{ librum_admin_email}}
+      - AdminPassword={{ librum_admin_passwd }}
     restart: unless-stopped
     depends_on:
-      - librum_db
+      - name: librum-db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.librum.entrypoints=web"
+      - "traefik.http.routers.librum.rule=Host(`lib.{{ domain }}`)"
+      - "traefik.http.middlewares.librum-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.librum.middlewares=librum-https-redirect"
+      - "traefik.http.routers.librum-secure.entrypoints=websecure"
+      - "traefik.http.routers.librum-secure.rule=Host(`lib.{{ domain }}`)"
+      - "traefik.http.routers.librum-secure.tls=true"
+      - "traefik.http.routers.librum-secure.service=librum"
+      - "traefik.http.services.librum.loadbalancer.server.port=5000"
+      - "traefik.docker.network=frontend"
+      # - "traefik.http.routers.librum-secure.middlewares=authelia@docker"
 
   - service_name: librum-db
     active: true
@@ -37,12 +48,12 @@ containers:
     networks:
       - default
     volumes:
-      - librum_db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     environment:
       - MARIADB_USER=librum
-      - MARIADB_PASSWORD=mariadb
+      - MARIADB_PASSWORD={{ librum_mdb_passwd }}
       - MARIADB_DATABASE=librum
-      - MARIADB_ROOT_PASSWORD=mariadb
+      - MARIADB_ROOT_PASSWORD={{ librum_mdb_root_passwd }}
     restart: unless-stopped
 
 networks:

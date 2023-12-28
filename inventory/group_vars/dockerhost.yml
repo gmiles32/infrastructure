@@ -31,14 +31,14 @@ services:
   - homepage
   - omada
   - paperless
-  - scrutiny
+  # - scrutiny
   - syncthing
   - uptime-kuma
   - vaultwarden
   - vikunja
   - actual
   - prometheus
-  # - librum
+  - librum
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
