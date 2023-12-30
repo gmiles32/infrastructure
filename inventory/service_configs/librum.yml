@@ -5,7 +5,7 @@ containers:
     image: librum
     # hostname: librum
     container_name: librum
-    user: 1000:1000
+    # user: 1000:1000
     # ports:
     #   - 5000:5000
     networks:
@@ -45,6 +45,7 @@ containers:
     image: mariadb:11.2.2
     # hostname: mariadb
     container_name: librum-db
+    user: 1000:1000
     networks:
       - default
     volumes:

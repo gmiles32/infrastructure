@@ -1,0 +1,39 @@
+compose_schema_version: "3.8"
+containers: 
+  - service_name: papermc
+    active: true 
+    restart: unless-stopped
+    container_name: papermc
+    image: itzg/minecraft-server
+    tty: true
+    stdin_open: true
+    environment:
+      - EULA=TRUE
+      - TYPE=PAPER
+      - MEMORY=6G
+    volumes:
+      # attach the relative directory 'data' to the container's /data path
+      - ./data:/data
+      - ./mods:/mods
+      - /etc/timezone:/etc/timezone
+
+  - service_name: router
+    active: true
+    container_name: router
+    restart: unless-stopped
+    image: ${MC_ROUTER_IMAGE:-itzg/mc-router}
+    depends_on:
+      - name: papermc
+    environment:
+     # enable API
+      - API_BINDING=:25564
+      - DEBUG=true
+      - MAPPING=mc.{{ ext_domain }}=papermc:25565
+    ports:
+      - 25565:25565
+      # bind the API port to only loopback to avoid external exposure
+      - "127.0.0.1:25564:25564"
+
+networks: []
+
+volumes: []

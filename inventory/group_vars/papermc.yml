@@ -5,18 +5,18 @@ package_list:
   - name: net-tools
   - name: git
   - name: firewalld
-  - name: nfs-common
+  - name: nfs
     apt: nfs-common
     dnf: nfs-utils
     yum: nfs-utils
   - name: wget
+  - name: python3-firewall
   - name: curl
 package_update_cache: yes
 
 # geerlingguy.pip
 pip_install_packages:
   - name: requests
-  - name: firewall
 
 # docker_firewalld
 interface: ens18
@@ -24,14 +24,15 @@ interface: ens18
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
-  - grafana
-services_config_path: /home/gabe/Projects/infrastructure/inventory/service_configs
+  - papermc
+services_config_path: ../inventory/service_configs
 
 # docker_start
-docker_networks: []
+docker_networks:
+  - frontend
 ports:
-  # Grafana
-  - port_number: 3000
+  # PaperMC
+  - port_number: "25565"
     protocol: "tcp"
-    
+
 commands: []
