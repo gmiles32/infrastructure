@@ -11,10 +11,13 @@ containers:
       - EULA=TRUE
       - TYPE=PAPER
       - MEMORY=6G
+      # TreeAssist,LuckyPerms,Vault
+      - SPIGET_RESOURCES=67436,28140,34315
     volumes:
       # attach the relative directory 'data' to the container's /data path
       - ./data:/data
       - ./mods:/mods
+      - ./plugins:/plugins
       - /etc/timezone:/etc/timezone
 
   - service_name: router
