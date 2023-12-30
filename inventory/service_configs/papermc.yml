@@ -4,7 +4,7 @@ containers:
     active: true 
     restart: unless-stopped
     container_name: papermc
-    image: itzg/minecraft-server
+    image: itzg/minecraft-server@sha256:6bb13ac6b4844cae8612d14e2b9d7baf88f063dcc2e9e7ddbbf61ce90f94311f
     tty: true
     stdin_open: true
     environment:
@@ -21,7 +21,7 @@ containers:
     active: true
     container_name: router
     restart: unless-stopped
-    image: ${MC_ROUTER_IMAGE:-itzg/mc-router}
+    image: ${MC_ROUTER_IMAGE:-itzg/mc-router@sha256:2b1bc6bde40bb6f38ea9e5deea35e37bd4a54dbdf8886cae0ddf7fe6df7c01db}
     depends_on:
       - name: papermc
     environment:
