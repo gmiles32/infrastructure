@@ -11,6 +11,7 @@ package_list:
     yum: nfs-utils
   - name: wget
   - name: python3-firewall
+  - name: curl
 package_update_cache: yes
 
 # geerlingguy.pip
@@ -31,14 +32,13 @@ services:
   - homepage
   - omada
   - paperless
-  # - scrutiny
   - syncthing
-  - uptime-kuma
   - vaultwarden
   - vikunja
   - actual
   - prometheus
-  # - librum
+  # Leave this last
+  - uptime-kuma
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 

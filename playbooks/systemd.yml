@@ -1,0 +1,5 @@
+- hosts: "{{ host }}"
+  vars_files:
+    - ../vars/vault.yml
+  roles:
+    - role: systemd_timer

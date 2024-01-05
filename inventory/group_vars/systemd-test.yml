@@ -1,0 +1,27 @@
+# grog.package
+package_list:
+  - name: vim
+  - name: rsync
+  - name: net-tools
+  - name: git
+  - name: firewalld
+  - name: nfs
+    apt: nfs-common
+    dnf: nfs-utils
+    yum: nfs-utils
+  - name: wget
+  - name: python3-firewall
+  - name: curl
+package_update_cache: yes
+
+# geerlingguy.pip
+pip_install_packages:
+  - name: requests
+
+# systemd_timer
+timers:
+  - service_name: docker-update
+    description: "Update docker containers"
+    script_path: /home/sysadmin/.local/bin/docker-update.sh
+    time: "*-*-* 4:00:00"
+    persistent: false
