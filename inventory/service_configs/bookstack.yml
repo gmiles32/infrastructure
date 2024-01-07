@@ -3,7 +3,7 @@ compose_schema_version: "2"
 containers:
   - service_name: bookstack
     active: true
-    image: lscr.io/linuxserver/bookstack
+    image: lscr.io/linuxserver/bookstack@sha256:6d955115cb6ba90b66d64d6d8477cb923e92c9b6d77d5a846cbbbecf85e46ba5
     container_name: bookstack
     environment:
       - PUID=1000
@@ -39,7 +39,7 @@ containers:
 
   - service_name: bookstack_db
     active: true
-    image: lscr.io/linuxserver/mariadb
+    image: lscr.io/linuxserver/mariadb@sha256:b19b70bdb39d3f3e59291bb576ae7ce62be85023da8bc11fe57766c5af3d1685
     container_name: bookstack_db
     environment:
       - PUID=1000
