@@ -3,7 +3,7 @@ compose_schema_version: "2"
 containers:
   - service_name: bookstack
     active: true
-    image: lscr.io/linuxserver/bookstack@sha256:6d955115cb6ba90b66d64d6d8477cb923e92c9b6d77d5a846cbbbecf85e46ba5
+    image: lscr.io/linuxserver/bookstack@sha256:dae128c83d7f51fc9a6c34919d8514b8b0b7eb957c156104c14c77293df90158
     container_name: bookstack
     environment:
       - PUID=1000
