@@ -1,0 +1,69 @@
+---
+compose_schema_version: '3'
+containers:
+  - service_name: miniflux
+    active: true
+    image: miniflux/miniflux:2.0.51
+    container_name: miniflux
+    # ports:
+    #   - "80:8080"
+    restart: unless-stopped
+    depends_on:
+      - name: db
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgres://miniflux:{{ miniflux_db_passwd }}@db/miniflux?sslmode=disable
+      - RUN_MIGRATIONS=1
+      - CREATE_ADMIN=1
+      - ADMIN_USERNAME={{ miniflux_admin_username }}
+      - ADMIN_PASSWORD={{ miniflux_admin_passwd }}
+      - OAUTH2_CLIENT_ID={{ miniflux_auth_id }}
+      - OAUTH2_CLIENT_SECRET={{ miniflux_auth_secret }}
+      - OAUTH2_PROVIDER=oidc
+      - OAUTH2_REDIRECT_URL=https://flux.{{ domain }}/oauth2/oidc/callback
+      - OAUTH2_OIDC_DISCOVERY_ENDPOINT=https://auth.{{ domain }}
+      - OAUTH2_USER_CREATION=false
+    networks:
+      - frontend
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.miniflux.entrypoints=web"
+      - "traefik.http.routers.miniflux.rule=Host(`flux.{{ domain }}`)"
+      - "traefik.http.middlewares.miniflux-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.miniflux.middlewares=miniflux-https-redirect"
+      - "traefik.http.routers.miniflux-secure.entrypoints=websecure"
+      - "traefik.http.routers.miniflux-secure.rule=Host(`flux.{{ domain }}`)"
+      - "traefik.http.routers.miniflux-secure.tls=true"
+      - "traefik.http.routers.miniflux-secure.service=miniflux"
+      - "traefik.http.services.miniflux.loadbalancer.server.port=8080"
+      - "traefik.docker.network=frontend"
+      # - "traefik.http.routers.miniflux-secure.middlewares=authelia@docker"
+
+  - service_name: db
+    active: true
+    image: postgres:15
+    container_name: miniflux-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=miniflux
+      - POSTGRES_PASSWORD={{ miniflux_db_passwd }}
+      - POSTGRES_DB=miniflux
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    healthcheck:
+      - name: test
+        value: ["CMD", "pg_isready", "-U", "miniflux"]
+      - name: interval
+        value: 10s
+      - name: start_period
+        value: 30s
+    networks:
+      - default
+        
+networks:
+  - network_name: frontend
+    external: true
+  - network_name: default        
+
+volumes: []

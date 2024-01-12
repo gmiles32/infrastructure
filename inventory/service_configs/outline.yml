@@ -1,0 +1,112 @@
+---
+compose_schema_version: "3.2"
+containers:
+
+  - service_name: outline
+    active: true
+    image: docker.getoutline.com/outlinewiki/outline:latest
+    restart: unless-stopped
+    container_name: outline
+    user: 1000:1000
+    environment:
+      - NODE_ENV=production
+      - SECRET_KEY={{ outline_secret_key }}
+      - UTILS_SECRET={{ outline_utils_secret_key }}
+      - DATABASE_URL=postgres://outline:{{ outline_db_passwd }}@postgres:5432/outline
+      - REDIS_URL=redis://redis:6379
+      - URL=https://wiki.{{ domain }}
+      - FORCE_HTTPS=true
+      - FILE_STORAGE=local
+      - OIDC_CLIENT_ID={{ outline_auth_id }}
+      - OIDC_CLIENT_SECRET={{ outline_auth_secret }}
+      - OIDC_AUTH_URI=https://auth.{{ domain }}/api/oidc/authorization
+      - OIDC_TOKEN_URI=https://auth.{{ domain }}/api/oidc/token
+      - OIDC_USERINFO_URI=https://auth.{{ domain }}/api/oidc/userinfo
+      - OIDC_USERNAME_CLAIM=preferred_username
+      - OIDC_DISPLAY_NAME=Authelia
+      - OIDC_SCOPES=openid offline_access profile email
+      - SMTP_HOST={{ smtp_endpoint }}
+      - SMTP_PORT=465
+      - SMTP_USERNAME={{ smtp_username }}
+      - SMTP_PASSWORD={{ smtp_password}}
+      - SMTP_FROM_EMAIL={{ outline_smtp_address }}
+      - SMTP_REPLY_EMAIL={{ outline_smtp_address }}
+      - SMTP_SECURE=true
+      - PGSSLMODE=disable
+      - LOG_LEVEL=debug
+    # ports:
+    #   - "3000:3000"
+    volumes:
+      - ./data:/var/lib/outline/data
+    depends_on:
+      - name: postgres
+      - name: redis
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.outline.entrypoints=web"
+      - "traefik.http.routers.outline.rule=Host(`wiki.{{ domain }}`)"
+      - "traefik.http.middlewares.outline-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.outline.middlewares=outline-https-redirect"
+      - "traefik.http.routers.outline-secure.entrypoints=websecure"
+      - "traefik.http.routers.outline-secure.rule=Host(`wiki.{{ domain }}`)"
+      - "traefik.http.routers.outline-secure.tls=true"
+      - "traefik.http.routers.outline-secure.service=outline"
+      - "traefik.http.services.outline.loadbalancer.server.port=3000"
+      - "traefik.docker.network=frontend"
+    networks:
+      - frontend
+      - default
+
+  - service_name: redis
+    active: true
+    image: redis
+    restart: unless-stopped
+    container_name: outline-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/redis.conf
+    command: ["redis-server", "/redis.conf"]
+    healthcheck:
+      - name: test
+        value: ["CMD", "redis-cli", "ping"]
+      - name: interval
+        value: 10s
+      - name: timeout
+        value: 30s
+      - name: retries
+        value: 3
+    networks:
+      - default
+
+  - service_name: postgres
+    active: true
+    image: postgres:16
+    restart: unless-stopped
+    container_name: outline-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    healthcheck:
+      - name: test
+        value: ["CMD", "pg_isready"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 20s
+      - name: retries 
+        value: 3
+    environment:
+      - POSTGRES_USER=outline
+      - POSTGRES_PASSWORD={{ outline_db_passwd }}
+      - POSTGRES_DB=outline
+    networks:
+      - default
+
+networks:
+  - network_name: frontend
+    external: true 
+  - network_name: default
+
+volumes: []

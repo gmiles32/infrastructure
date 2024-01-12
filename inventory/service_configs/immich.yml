@@ -79,7 +79,7 @@ containers:
       - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
       - "DB_HOSTNAME=immich-postgres"
-      - "DB_USERNAME=postgres"
+      - "DB_USERNAME=immich"
       - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
       - "IMMICH_WEB_URL=http://immich-web:3000"
@@ -103,7 +103,7 @@ containers:
     image: tensorchord/pgvecto-rs:pg14-v0.1.11@sha256:0335a1a22f8c5dd1b697f14f079934f5152eaaa216c09b61e293be285491f8ee    
     environment:
       - "POSTGRES_PASSWORD={{ immich_pg_password }}"
-      - "POSTGRES_USER=postgres"
+      - "POSTGRES_USER=immich"
       - "POSTGRES_DB=immich"
     volumes:
       - ./pgdata:/var/lib/postgresql/data

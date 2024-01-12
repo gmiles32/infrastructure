@@ -5,6 +5,7 @@ containers:
     active: true
     image: lscr.io/linuxserver/bookstack@sha256:dae128c83d7f51fc9a6c34919d8514b8b0b7eb957c156104c14c77293df90158
     container_name: bookstack
+    # env_file: "./.env" # Not being read correctly
     environment:
       - PUID=1000
       - PGID=1000
@@ -14,13 +15,20 @@ containers:
       - DB_USER=bookstack
       - DB_PASS={{ bookstack_db_passwd }}
       - DB_DATABASE=bookstackapp
+      - AUTH_METHOD=oidc
+      - OIDC_NAME=Authelia
+      - OIDC_DISPLAY_NAME_CLAIMS=name
+      - OIDC_CLIENT_ID={{ bookstack_auth_id }}
+      - OIDC_CLIENT_SECRET={{ bookstack_auth_secret }}
+      - OIDC_ISSUER=https://auth.{{ domain }}
+      - OIDC_ISSUER_DISCOVER=true
     volumes:
       - ./data:/config
     # ports:
     #   - 6875:80
     restart: unless-stopped
     depends_on:
-      - bookstack_db
+      - name: bookstack_db
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bookstack.entrypoints=web"
@@ -50,7 +58,7 @@ containers:
       - MYSQL_USER=bookstack
       - MYSQL_PASSWORD={{ bookstack_db_passwd }}
     volumes:
-      - ./bookstack_db_data:/config
+      - ./db:/config
     restart: unless-stopped
     networks:
       - default

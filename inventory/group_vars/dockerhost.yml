@@ -28,7 +28,6 @@ services:
   - traefik
   - immich
   - calibre
-  - freshrss
   - homepage
   - omada
   - paperless
@@ -36,14 +35,21 @@ services:
   - vaultwarden
   - vikunja
   - actual
-  - wikijs
-  # - prometheus
+  - outline
+  - miniflux
   # Leave this last
   - uptime-kuma
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
 # docker_start
+docker_start_home: /home/sysadmin
+docker_start_postgres_nfs_share: /mnt/proton/containers/postgres-backups
+postgres:
+  - immich
+  - vikunja
+  - outline
+  - miniflux
 docker_networks:
   - frontend
   - backend
@@ -74,4 +80,8 @@ ports:
   # Prometheus
   - port_number: "9090"
     protocol: "tcp"
-commands: []
+  # Reddit-RSS
+  - port_number: "8080"
+    protocol: "tcp"
+commands:
+  - "docker run -dp 0.0.0.0:8080:8080 --name reddit-rss reddit-rss"
