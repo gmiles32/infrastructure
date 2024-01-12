@@ -3,7 +3,7 @@ compose_schema_version: '3'
 containers:
   - service_name: miniflux
     active: true
-    image: miniflux/miniflux:2.0.51
+    image: miniflux/miniflux:2.0.51@sha256:9f3bca6a95428c04c8fb54ee723a5f69b9e419b0bf5dfd7a4d70dfb0414d60f1
     container_name: miniflux
     # ports:
     #   - "80:8080"
@@ -42,7 +42,7 @@ containers:
 
   - service_name: db
     active: true
-    image: postgres:15
+    image: postgres:15@sha256:23ddd7177ddf41d9465cd10eaef64aaf480cea5dde9f1da034ecb77d59185a35
     container_name: miniflux-postgres
     restart: unless-stopped
     environment:
