@@ -50,6 +50,7 @@ postgres:
   - vikunja
   - outline
   - miniflux
+  - vaultwarden
 docker_networks:
   - frontend
   - backend

@@ -9,7 +9,7 @@ containers:
       - ./data:/data/
     networks:
       - frontend
-      - backend
+      - default
     environment:
       - SMTP_HOST={{ smtp_endpoint }}
       - SMTP_FROM={{ vw_smtp_address }}
@@ -19,10 +19,10 @@ containers:
       - SMTP_USERNAME={{ smtp_username }}
       - SMTP_PASSWORD={{ smtp_password }}
       - SMTP_TIMEOUT=25
-      # - SMTP_AUTH_MECHANISM=Plain
       - SIGNUPS_ALLOWED=false
       - DOMAIN=https://vw.{{ domain }}
       - SHOW_PASSWORD_HINT=false
+      - DATABASE_URL=postgresql://vaultwarden:{{ vw_pg_passwd }}@postgres:5432/vaultwarden
     labels:
       - traefik.enable=true
       - traefik.docker.network=frontend
@@ -49,11 +49,33 @@ containers:
       - traefik.http.routers.vaultwarden-websocket-http.service=vaultwarden-websocket
       - traefik.http.services.vaultwarden-websocket.loadbalancer.server.port=3012
 
+  - service_name: postgres
+    active: true
+    image: postgres:16
+    restart: unless-stopped
+    container_name: vaultwarden-postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    healthcheck:
+      - name: test
+        value: ["CMD", "pg_isready"]
+      - name: interval
+        value: 30s
+      - name: timeout
+        value: 20s
+      - name: retries 
+        value: 3
+    environment:
+      - POSTGRES_USER=vaultwarden
+      - POSTGRES_PASSWORD={{ vw_pg_passwd }}
+      - POSTGRES_DB=vaultwarden
+    networks:
+      - default
+
 networks:
   - network_name: frontend
     external: true
-  - network_name: backend
-    external: true
+  - network_name: default
 
 volumes: []
 

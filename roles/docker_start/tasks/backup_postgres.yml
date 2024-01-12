@@ -1,2 +1,0 @@
-- name: "Dump {{ item }} contents to NFS share"
-  shell: "docker exec {{ item }}-postgres pg_dump -U {{ item }} -F t {{ item }} | gzip > {{ docker_start_home }}/postgres-backups/{{ item }}-$(date +%Y-%m-%d).tar.gz3"

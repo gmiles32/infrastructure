@@ -1,36 +1,51 @@
-- name: Ensure postgres backups target directory is present
-  file:
-    path: "{{ docker_start_home }}/postgres-backups"
-    state: directory
-    owner: 1000
-    group: 1000
+- name: Backup all postgres containers
+  tags: pg-backup
+  block:
+    - name: Ensure postgres backups target directory is present
+      file:
+        path: "{{ docker_start_home }}/postgres-backups"
+        state: directory
+        owner: 1000
+        group: 1000
+      
+    - name: Mount NFS share for postgres backups
+      command: sudo mount -t nfs {{ nas }}:{{ docker_start_postgres_nfs_share }} {{ docker_start_home }}/postgres-backups
 
-- name: Mount NFS share for postgres backups
-  command: sudo mount -t nfs {{ nas }}:{{ docker_start_postgres_nfs_share }} {{ docker_start_home }}/postgres-backups
+    - name: Backup any running postgres instance
+      shell: "docker exec {{ item }}-postgres pg_dump -U {{ item }} -F t {{ item }} | gzip > {{ docker_start_home }}/postgres-backups/{{ item }}-$(date +%Y-%m-%d).tar.gz3"
+      loop: "{{ postgres }}"
 
-- name: Backup any running postgres instance
-  shell: "docker exec {{ item }}-postgres pg_dump -U {{ item }} -F t {{ item }} | gzip > {{ docker_start_home }}/postgres-backups/{{ item }}-$(date +%Y-%m-%d).tar.gz3"
-  loop: "{{ postgres }}"
-
-- name: Unmount NFS share
-  command: sudo umount {{ docker_start_home }}/postgres-backups
+    - name: Unmount NFS share
+      command: sudo umount {{ docker_start_home }}/postgres-backups
 
 - name: Get running containers
   docker_host_info:
     containers: yes
   register: docker_info
+  tags: 
+    - restart
+    - pg-backup
 
 - name: Stop and remove running containers
   docker_container:
     name: "{{ item }}"
     state: absent
   loop: "{{ docker_info.containers | map(attribute='Id') | list }}"
+  tags:
+    - restart
+    - pg-backup
 
 - name: Homelab-specific setup
   include_tasks: general.yml
+  tags:
+    - restart
+    - pg-backup
 
 - name: Start all services
   command: docker compose up -d --force-recreate
   args:
     chdir: "{{ docker_compose_generator_output_path }}/{{ item }}"
   loop: "{{ services }}"
+  tags:
+    - restart
+    - pg-backup
