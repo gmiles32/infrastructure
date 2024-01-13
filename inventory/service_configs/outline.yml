@@ -15,7 +15,7 @@ containers:
       - DATABASE_URL=postgres://outline:{{ outline_db_passwd }}@postgres:5432/outline
       - REDIS_URL=redis://redis:6379
       - URL=https://wiki.{{ domain }}
-      - FORCE_HTTPS=true
+      - FORCE_HTTPS=false
       - FILE_STORAGE=local
       - OIDC_CLIENT_ID={{ outline_auth_id }}
       - OIDC_CLIENT_SECRET={{ outline_auth_secret }}
