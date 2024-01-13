@@ -84,5 +84,4 @@ ports:
   # Reddit-RSS
   - port_number: "8080"
     protocol: "tcp"
-commands:
-  - "docker run -dp 0.0.0.0:8080:8080 --name reddit-rss reddit-rss"
+commands: []

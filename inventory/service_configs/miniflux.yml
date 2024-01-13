@@ -60,7 +60,27 @@ containers:
         value: 30s
     networks:
       - default
-        
+  
+  - service_name: reddit-rss
+    active: true
+    image: cartoonchemist/reddit-rss:latest@sha256:16af6a18af3f9f5968b97c8c2217a7fa21627d4d9db9502b792a88767451497b
+    container_name: reddit-rss
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.reddit-rss.entrypoints=web"
+      - "traefik.http.routers.reddit-rss.rule=Host(`reddit.{{ domain }}`)"
+      - "traefik.http.middlewares.reddit-rss-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.reddit-rss.middlewares=reddit-rss-https-redirect"
+      - "traefik.http.routers.reddit-rss-secure.entrypoints=websecure"
+      - "traefik.http.routers.reddit-rss-secure.rule=Host(`reddit.{{ domain }}`)"
+      - "traefik.http.routers.reddit-rss-secure.tls=true"
+      - "traefik.http.routers.reddit-rss-secure.service=reddit-rss"
+      - "traefik.http.services.reddit-rss.loadbalancer.server.port=8080"
+      - "traefik.docker.network=frontend"
+    networks:
+      - frontend
+              
 networks:
   - network_name: frontend
     external: true
