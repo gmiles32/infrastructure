@@ -34,7 +34,7 @@ services:
   - syncthing
   - vaultwarden
   - vikunja
-  - actual
+  # - actual
   - outline
   - miniflux
   # Leave this last
@@ -79,9 +79,9 @@ ports:
   - port_number: "29810-29814"
     protocol: "udp"  
   # Prometheus
-  - port_number: "9090"
-    protocol: "tcp"
+  # - port_number: "9090"
+  #   protocol: "tcp"
   # Reddit-RSS
-  - port_number: "8080"
-    protocol: "tcp"
+  # - port_number: "8080"
+  #   protocol: "tcp"
 commands: []
