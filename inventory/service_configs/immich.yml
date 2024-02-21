@@ -70,7 +70,7 @@ containers:
   - service_name: immich-machine-learning
     active: true
     container_name: immich-machine-learning
-    image: ghcr.io/immich-app/immich-machine-learning:v1.95.0@sha256:4c9ee9c3bb3082bb340f548377338c804c82912c49f71a6edc506df7e06eb589
+    image: ghcr.io/immich-app/immich-machine-learning:v1.95.1@sha256:33211bbedb8af1a24c1416617c1e2504d6011a18d6ed83a4b8023647bfbfe58a
     volumes:
       - ./model-cache:/cache
     environment:
