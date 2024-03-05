@@ -15,7 +15,7 @@ containers:
 
   - service_name: webserver
     active: true
-    image: ghcr.io/paperless-ngx/paperless-ngx:2.6.0@sha256:13af9a6272ba7558e83a1c294211e3013092e12b6829eafd617a7375bc42a672
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.6.1@sha256:410c4bcc8dced871a3cae90d29d61a4ee32c8519fbbbf8875548d7a5230fbe8d
     user: 1000:1000
     container_name: paperless
     restart: unless-stopped
