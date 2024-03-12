@@ -42,7 +42,7 @@ containers:
 
   - service_name: db
     active: true
-    image: postgres:15@sha256:4f384de91036814d3255ca697ee61c7c036204f723461adbc36b1404b20323e6
+    image: postgres:15@sha256:8776e000603d5e7ad55f76685bed210404d0b18e40fdf49d301aaba8aff04c6d
     container_name: miniflux-postgres
     restart: unless-stopped
     environment:
