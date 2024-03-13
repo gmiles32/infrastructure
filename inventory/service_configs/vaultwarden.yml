@@ -51,7 +51,7 @@ containers:
 
   - service_name: postgres
     active: true
-    image: postgres:16@sha256:4784d9bcd8e603179d03732c9d2cd145c3c90e42f29847a95b5317fb37ac4765
+    image: postgres:16@sha256:b88ca309fb656f7fc057ac4e6e74188ff1462a21c5527136b001390d6d2d4edb
     restart: unless-stopped
     container_name: vaultwarden-postgres
     volumes:
