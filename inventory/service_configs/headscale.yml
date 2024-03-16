@@ -19,7 +19,7 @@ containers:
       - "traefik.docker.network=frontend"
   - service_name: traefik
     active: true
-    image: traefik:2.11.0@sha256:4be302e188b5be7637a3404033e8088c005059fd29e05b7ff04a403fac3d13ea
+    image: traefik:2.11.0@sha256:e1b92cac0de3d8866a5d2a8f41573a91d1c08101b4500ccd6fc19b467fdea40c
     container_name: traefik
     restart: unless-stopped
     security_opt:
