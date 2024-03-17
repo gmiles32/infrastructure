@@ -2,7 +2,7 @@ compose_schema_version: "3.4"
 containers:
   - service_name: broker
     active: true
-    image: docker.io/library/redis:7.2.4-alpine@sha256:6106eb3bd6deefc7e503c440c7cc9ce227af3e5e53df36f41bcf321f5b7a4b08
+    image: docker.io/library/redis:7.2.4-alpine@sha256:641c365890fc79f182fb198c80ee807d040b9cfdb19cceb7f10c55a268d212b8
     container_name: paperless-redis
     restart: unless-stopped
     volumes:
