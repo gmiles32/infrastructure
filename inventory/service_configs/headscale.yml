@@ -40,7 +40,7 @@ containers:
 
   - service_name: authelia
     active: true
-    image: authelia/authelia:4.38.3@sha256:2405f5c923edb14c2b83d30315ec584f99cabffd79da91d8a990711a3cf1ab6c
+    image: authelia/authelia:4.38.4@sha256:b92ad6ed6050baf91aa554abeea0f942f8fb798b62f835b1eaa3c8eeb4705f54
     container_name: authelia
     user: 1000:1000
     volumes:
