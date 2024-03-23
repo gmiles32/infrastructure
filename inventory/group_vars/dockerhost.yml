@@ -34,7 +34,7 @@ services:
   - syncthing
   - vaultwarden
   - vikunja
-  # - actual
+  - actual
   - outline
   - miniflux
   # Leave this last

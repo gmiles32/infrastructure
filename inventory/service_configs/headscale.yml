@@ -3,13 +3,9 @@ containers:
   - service_name: headscale
     active: true
     image: headscale/headscale:latest@sha256:fd2a5326d0742a98597e33acbb33a6055afbe9c98b05919a7ff65bb0715f9bb4
-    pull_policy: always
     container_name: headscale
-    restart: unless-stopped
-    command: headscale serve
-    networks:
-      - frontend
     volumes:
+<<<<<<< HEAD
       - ./headscale/config:/etc/headscale
       - ./headscale/data:/var/lib/headscale
     labels:
@@ -58,18 +54,22 @@ containers:
       - 'traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true'
       - 'traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email'  # yamllint disable-line rule:line-length
       - "traefik.docker.network=frontend"
+=======
+      - ./config:/etc/headscale
+      - ./data:/var/lib/headscale
+    ports:
+      - 8080:8080
+    command: headscale serve
+>>>>>>> 96a130f (Updated resources for headscale)
     restart: unless-stopped
-    environment:
-      - "TZ=America/Denver"
-      - "AUTHELIA_JWT_SECRET={{ headscale_jwt_secret }}"
-      - "AUTHELIA_SESSION_SECRET={{ headscale_session_secret }}"
-      - "AUTHELIA_STORAGE_ENCRYPTION_KEY={{ headscale_storage_encryption_key }}"
-      # AUTHELIA_DUO_API_INTEGRATION_KEY_FILE: /run/secrets/authelia_duo_api_integration_key
-      # AUTHELIA_DUO_API_SECRET_KEY_FILE: /run/secrets/authelia_duo_api_secret_key
-      # AUTHELIA_NOTIFIER_SMTP_PASSWORD_FILE: /run/secrets/authelia_smtp_password
 
-networks:
-  - network_name: frontend
-    external: true
+  - service_name: headscale-ui
+    active: true
+    image: ghcr.io/gurucomputing/headscale-ui:latest
+    container_name: headscale-ui
+    ports:
+      - 9443:443
+
+networks: []
 
 volumes: []
