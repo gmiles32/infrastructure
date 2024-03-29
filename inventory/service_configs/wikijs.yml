@@ -4,7 +4,7 @@ compose_schema_version: "2.1"
 containers:
   - service_name: wikijs
     active: true
-    image: lscr.io/linuxserver/wikijs:latest@sha256:0984803d82ebb68b24a3e311ab5ffc68010d16f60079dda762ad4814499f6070
+    image: lscr.io/linuxserver/wikijs:latest@sha256:2787d1117b70bb8cf1ac7fc8974a359009984d414ccc40d4dafed3c7ff4e6d31
     container_name: wikijs
     environment:
       - PUID=1000
