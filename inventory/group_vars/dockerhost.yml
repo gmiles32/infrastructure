@@ -28,17 +28,17 @@ services:
   - traefik
   - immich
   - calibre
-  - homepage
   - omada
   - paperless
   - syncthing
   - vaultwarden
+<<<<<<< HEAD
   - vikunja
   - actual
   - outline
+=======
+>>>>>>> 31a9c6a (Added wsl SSH key)
   - miniflux
-  # Leave this last
-  - uptime-kuma
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
@@ -47,8 +47,6 @@ docker_start_home: /home/sysadmin
 docker_start_postgres_nfs_share: /mnt/proton/containers/postgres-backups
 postgres:
   - immich
-  - vikunja
-  - outline
   - miniflux
   - vaultwarden
 docker_networks:
