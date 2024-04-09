@@ -32,13 +32,9 @@ services:
   - paperless
   - syncthing
   - vaultwarden
-<<<<<<< HEAD
-  - vikunja
-  - actual
-  - outline
-=======
->>>>>>> 31a9c6a (Added wsl SSH key)
   - miniflux
+  - actual
+
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
 
