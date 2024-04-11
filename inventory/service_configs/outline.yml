@@ -59,7 +59,7 @@ containers:
 
   - service_name: redis
     active: true
-    image: redis@sha256:8482ee910acbcd8f31c5a08329e3903dbd2a018e2837897bfaf9bafb80b494b2
+    image: redis@sha256:8e2e57f7179377c2de691dbba392a753ea67e45b8c958578ea3b0bfd646b5b7c
     restart: unless-stopped
     container_name: outline-redis
     ports:
