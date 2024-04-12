@@ -2,7 +2,7 @@ compose_schema_version: '3.9'
 containers:
   - service_name: n8nio
     active: true
-    image: docker.n8n.io/n8nio/n8n:1.36.1@sha256:6815f1d7fc883d6c23edf84d2015949bdfef067e42c49194620b893ef4d41904
+    image: docker.n8n.io/n8nio/n8n:1.37.1@sha256:97fc3739156f6598f67c28ad42c33bbb87c16688ece4440a96132897d7e79c30
     container_name: n8n
     restart_policy: unless-stopped
     volumes:
