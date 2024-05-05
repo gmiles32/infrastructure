@@ -33,7 +33,6 @@ services:
   - syncthing
   - vaultwarden
   - miniflux
-  - actual
 
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
