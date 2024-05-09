@@ -47,7 +47,7 @@ containers:
 
   - service_name: cadvisor
     active: true
-    image: gcr.io/cadvisor/cadvisor@sha256:ddadf3e2fd880deb4e0f3606d34a0d9da1165e3801116075d98a1901635dc9e8
+    image: gcr.io/cadvisor/cadvisor@sha256:524779a2661c9ea1b4b87d47fedfc56c3aed182511fcdac031f345a1fd229461
     devices:
       - /dev/kmsg
     privileged: true
