@@ -3,7 +3,7 @@ compose_schema_version: "2"
 containers:
   - service_name: bookstack
     active: true
-    image: lscr.io/linuxserver/bookstack@sha256:1d768eb07782302525a7ede472e72c96ed579b4d173a119a93c8aeb12af70789
+    image: lscr.io/linuxserver/bookstack@sha256:58bb731182f937f85563c79f70d9cd5ec0e14ee4cb77a52bf540f77ccc7b8040
     container_name: bookstack
     # env_file: "./.env" # Not being read correctly
     environment:
