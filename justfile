@@ -12,5 +12,11 @@ serv HOST TAGS="restart":
 ssh HOST:
     ansible-playbook -b playbooks/ssh.yml -e host={{HOST}} -k -K
 
+renovate HOST:
+    git pull origin main
+    ansible-playbook -b playbooks/configure.yml -e host={{HOST}} --tags=compose
+    ansible-playbook -b playbooks/start_docker.yml -e host={{HOST}} --tags=restart
+  
 update:
     ansible-playbook -b playbooks/update.yml
+
