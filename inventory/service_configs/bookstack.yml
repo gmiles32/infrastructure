@@ -47,7 +47,7 @@ containers:
 
   - service_name: bookstack_db
     active: true
-    image: lscr.io/linuxserver/mariadb@sha256:901d419594e6176614d1a861a138b7c4724f2d67e3c10e31e5bc844ea380ff40
+    image: lscr.io/linuxserver/mariadb@sha256:223e4d0bf37fb853fee59a49eee2d785a1341b566bf94cdbb1d2a87d1e7e910c
     container_name: bookstack_db
     environment:
       - PUID=1000
