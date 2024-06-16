@@ -13,8 +13,9 @@ containers:
       - 80:80
       - 443:443
     environment:
-      - "CF_API_EMAIL={{ cf_api_email }}"
-      - "CF_API_KEY={{ cf_api_key }}"
+      - "CF_DNS_API_TOKEN={{ cf_dns_api_token }}"
+      #- "CF_API_EMAIL={{ cf_api_email }}"
+      #- "CF_API_KEY={{ cf_api_key }}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
