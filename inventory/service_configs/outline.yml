@@ -81,7 +81,7 @@ containers:
 
   - service_name: postgres
     active: true
-    image: postgres:16@sha256:6d2a810d24786a90bf4bf2f4d4ce7a1039696a9269f3293abf3d6c8aa0bab9da
+    image: postgres:16@sha256:e891dea3db3b3472b8cabe37af00563c9e05b0d7726be5ef7ff0e39be8db61a9
     restart: unless-stopped
     container_name: outline-postgres
     volumes:
