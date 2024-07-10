@@ -3,7 +3,7 @@ containers:
   - service_name: immich-server
     active: true
     container_name: immich-server
-    image: ghcr.io/immich-app/immich-server:v1.107.2@sha256:75746006b35a7bc61408cd4d124dc73344f0a087c2d9769c4715ca84a1d87591
+    image: ghcr.io/immich-app/immich-server:v1.108.0@sha256:248a6da7dadeb57f90eacd5635ecc65e63d4c3646a6c94a362bb57cba1b314fa
     command: ["start.sh", "immich"]
     volumes:
       - photos:/usr/src/app/upload
@@ -44,7 +44,7 @@ containers:
   - service_name: immich-microservices
     active: true
     container_name: immich-microservices
-    image: ghcr.io/immich-app/immich-server:v1.107.2@sha256:75746006b35a7bc61408cd4d124dc73344f0a087c2d9769c4715ca84a1d87591
+    image: ghcr.io/immich-app/immich-server:v1.108.0@sha256:248a6da7dadeb57f90eacd5635ecc65e63d4c3646a6c94a362bb57cba1b314fa
     command: ["start.sh", "microservices"]
     volumes:
       - photos:/usr/src/app/upload
