@@ -2,7 +2,7 @@ compose_schema_version: "3.2"
 containers:
   - service_name: syncthing
     active: true
-    image: lscr.io/linuxserver/syncthing:1.27.9@sha256:72296c123980a01f708fef72ae0c84e67298f7786be98e8916453eebe5e46fda
+    image: lscr.io/linuxserver/syncthing:1.27.9@sha256:d7bf14e25407cc205757b67b112ab0d5552e147d774f6faa3d6bf599fd42a3f5
     container_name: syncthing
     environment:
       - "PUID=1000"
