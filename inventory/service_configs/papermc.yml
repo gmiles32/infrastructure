@@ -4,7 +4,7 @@ containers:
     active: true 
     restart: unless-stopped
     container_name: papermc
-    image: itzg/minecraft-server@sha256:ad3648f7798cd483f8040582c35722e7771167db0896f5a4c0cf356ed442fa55
+    image: itzg/minecraft-server@sha256:15564eeb200e60a2b81061e3d122b1f2da554982e2a297b2bbefd330ddb30ed0
     tty: true
     stdin_open: true
     environment:
