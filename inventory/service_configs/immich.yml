@@ -26,7 +26,7 @@ containers:
       - default
       - frontend
     ports:
-      - 2283:3001
+      - 3001:3001
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.immich.entrypoints=web"
