@@ -24,7 +24,7 @@ containers:
     active: true
     container_name: router
     restart: unless-stopped
-    image: ${MC_ROUTER_IMAGE:-itzg/mc-router@sha256:271f2a3621b653c0b3ccc44b42cb62c6414f0e41a6d6ca002319f2408fc1489e}
+    image: ${MC_ROUTER_IMAGE:-itzg/mc-router@sha256:7bb8ac0760810bbac43840fcaa616b5e403b1cf5dc3c554aa5eb6df22b3648ee}
     depends_on:
       - name: papermc
     environment:
