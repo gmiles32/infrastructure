@@ -37,7 +37,7 @@ containers:
       - "traefik.http.routers.immich-secure.rule=Host(`immich.{{ domain }}`)"
       - "traefik.http.routers.immich-secure.tls=true"
       - "traefik.http.routers.immich-secure.service=immich"
-      - "traefik.http.services.immich.loadbalancer.server.port=3001"
+      - "traefik.htp.services.immich.loadbalancer.server.port=3001"
       - "traefik.docker.network=frontend"
     restart: unless-stopped
 
@@ -79,7 +79,7 @@ containers:
       - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
       - "DB_HOSTNAME=immich-postgres"
-      - "DB_USERNAME=immich"
+      - "DB_USERNAME=postgres"
       - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
       - "IMMICH_WEB_URL=http://immich-web:3000"
@@ -96,6 +96,8 @@ containers:
     healthcheck:
       - name: test
         value: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+    networks:
+      - default
 
   - service_name: database
     active: true
@@ -106,11 +108,21 @@ containers:
       - "POSTGRES_PASSWORD={{ immich_pg_password }}"
       - "POSTGRES_USER=postgres"
       - "POSTGRES_DB=immich"
+      - "POSTGRES_INITDB_ARGS='--data-checksums'"
     volumes:
       - ./pgdata:/var/lib/postgresql/data
     networks:
       - default
     restart: unless-stopped
+    healthcheck:
+      - name: test
+        value: pg_isready --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' || exit 1; Chksum="$$(psql --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')"; echo "checksum failure count is $$Chksum"; [ "$$Chksum" = '0' ] || exit 1
+      - name: interval
+        value: 5m
+      - name: start_interval
+        value: 30s
+      - name: start_period
+        value: 5m
 
 networks:
   - network_name: frontend
