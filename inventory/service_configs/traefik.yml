@@ -2,7 +2,7 @@ compose_schema_version: '3'
 containers:
   - service_name: traefik
     active: true
-    image: traefik:v2.11.9@sha256:22f1cdebaf644b0e7ce4a3be5c4efa4272ca442eb9851c70bf53313c20cf7fe6
+    image: traefik:v2.11.10@sha256:01c9695705ab9a48d911155c705c6eee90e0f35f4a23e6e67c8c1797ab32c8c8
     container_name: traefik
     restart: unless-stopped
     security_opt:
