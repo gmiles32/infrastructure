@@ -2,7 +2,7 @@ compose_schema_version: '2.4'
 containers:
   - service_name: influxdb
     active: true
-    image: influxdb:2.7@sha256:655803b49ad771c1e2040464bf2007bf32dcd182923c5607c7c646dc67f88b6c
+    image: influxdb:2.7@sha256:aac51f94d98041e591aa4a5f36294080dd7987c1033ff115febfab98adcda61d
     container_name: scrutiny-db
     ports:
       - '8086:8086'
