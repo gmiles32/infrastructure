@@ -52,7 +52,7 @@ containers:
   - service_name: database
     active: true
     container_name: vikunja-postgres
-    image: postgres:13@sha256:46729a80cc02f2a62aabb36334f639d0d5ebe65f0ed0c92f6a1fc35d2140861c
+    image: postgres:13@sha256:9309f39e629adf7dc931f68355db50e944c38a14dc09f29cae140a3d90d31bbd
     environment:
       - "POSTGRES_PASSWORD={{ vikunja_pg_password }}"
       - "POSTGRES_USER=vikunja"
