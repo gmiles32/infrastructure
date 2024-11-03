@@ -4,7 +4,7 @@ containers:
   - service_name: actual-server
     active: yes
     container_name: actual-server
-    image: docker.io/actualbudget/actual-server:latest@sha256:a1b65968b829fa3ca6d85e703821971418b1fa9c81083a391c52f6fe88e90197
+    image: docker.io/actualbudget/actual-server:latest@sha256:96880c0296b1e6873c570e8f779569acc727e5a7b1ead70dcc6cb58bfde36e7e
     environment:
       - ACTUAL_UPLOAD_FILE_SYNC_SIZE_LIMIT_MB=20
       - ACTUAL_UPLOAD_SYNC_ENCRYPTED_FILE_SYNC_SIZE_LIMIT_MB=50
