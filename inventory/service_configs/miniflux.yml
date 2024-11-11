@@ -3,7 +3,7 @@ compose_schema_version: '3'
 containers:
   - service_name: miniflux
     active: true
-    image: miniflux/miniflux:2.2.2@sha256:7d3e21d8c81b6ee3b1a177bba0099821c4eaa0ab38e7a7c0be461ed271e6c33f
+    image: miniflux/miniflux:2.2.3@sha256:e21953092096579daaad39ba69729f01b08380b03bae4544a943f549c8e11a67
     container_name: miniflux
     # ports:
     #   - "80:8080"
