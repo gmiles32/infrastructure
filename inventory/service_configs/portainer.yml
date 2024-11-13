@@ -3,7 +3,7 @@ containers:
   - service_name: portainer
     active: yes
     # image: portainer/portainer-ce:2.18.4@sha256:4b9873531d38af12dfd4dbc51af7c866ba8494fc25ee3fe47e7572e6e8dd6b23
-    image: portainer/portainer-ce:2.23.0@sha256:bac59ebb8208d09aa3f1b13f2467b8145cad01c754dc8c59a7d5cf0677d5c963
+    image: portainer/portainer-ce:2.24.0@sha256:000f04be4f692256223a2f5fc6f060d9e64bba641f903026dfbdd3c9422e11c1
     container_name: portainer
     restart: unless-stopped
     security_opt:
