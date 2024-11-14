@@ -19,24 +19,18 @@ pip_install_packages:
   - name: requests
 
 # docker_firewalld
-interface: end0
+interface: ens18
 
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
-  - ha
+  - nextcloud
 services_config_path: ../inventory/service_configs
 
 # docker_start
 docker_networks: []
 ports:
-  # Home Assistant
-  - port_number: "8123"
-    protocol: "tcp"
-  # Headscale
+  # Nextcloud
   - port_number: "8080"
-    protocol: "tcp"
-  # Headscale UI
-  - port_number: "9443"
     protocol: "tcp"
 commands: []

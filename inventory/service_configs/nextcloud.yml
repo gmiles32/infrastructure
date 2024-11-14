@@ -1,0 +1,54 @@
+compose_schema_version: "3.8"
+containers:
+  - service_name: nextcloud
+    active: true
+    container_name: nextcloud
+    image: nextcloud:stable-fpm-alpine
+    restart: always
+    ports:
+      - 8080:80
+    links:
+      - db
+    volumes:
+      - nextcloud-data:/var/www/html
+    environment:
+      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+
+  - service_name: db
+    active: true
+    container_name: db
+    image: mariadb:10.5
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - nextcloud-db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD={{ nextcloud_mysql_root_password }}
+      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+networks: []
+
+volumes: 
+  - volume_name: nextcloud-data
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/nextcloud-data"
+  - volume_name: nextcloud-db
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/nextcloud-db"

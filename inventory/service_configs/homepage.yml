@@ -9,6 +9,8 @@ containers:
       - /var/run/docker.sock:/var/run/docker.sock # (optional) For docker integrations, see alternative methods
       - ./icons:/app/public/icons
       - ./images:/app/public/images
+    ports:
+      - 3000:3000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.homepage.entrypoints=web"

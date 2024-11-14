@@ -26,13 +26,13 @@ docker_compose_generator_output_path: /home/sysadmin/docker
 services:
   - authelia
   - traefik
-  - immich
   - calibre
   - omada
+  # - homepage
+  - stirling-pdf
   - paperless
-  - syncthing
-  - vaultwarden
   - miniflux
+  - immich
 
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
@@ -43,7 +43,7 @@ docker_start_postgres_nfs_share: /mnt/proton/containers/postgres-backups
 postgres:
   - immich
   - miniflux
-  - vaultwarden
+  # - vaultwarden
 docker_networks:
   - frontend
   - backend

@@ -4,29 +4,22 @@ containers:
     active: true
     container_name: immich-server
     image: ghcr.io/immich-app/immich-server:v1.120.2@sha256:99f97cb61cd1b49c23fbee46a0ed067f171970518d8834c7e8b2dd3ac0d39c63
-    command: ["start.sh", "immich"]
     volumes:
       - photos:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     environment:
       - "TZ=America/Boise"
-      - "TYPESENSE_ENABLED=true"
-      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
       - "DB_HOSTNAME=immich-postgres"
       - "DB_USERNAME=postgres"
       - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
-      - "IMMICH_WEB_URL=http://immich-web:3000"
-      - "IMMICH_SERVER_URL=http://immich-server:3001"
     depends_on:
       - name: redis
       - name: database
     networks:
       - default
       - frontend
-    ports:
-      - 3001:3001
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.immich.entrypoints=web"
@@ -37,34 +30,8 @@ containers:
       - "traefik.http.routers.immich-secure.rule=Host(`immich.{{ domain }}`)"
       - "traefik.http.routers.immich-secure.tls=true"
       - "traefik.http.routers.immich-secure.service=immich"
-      - "traefik.htp.services.immich.loadbalancer.server.port=3001"
+      - "traefik.http.services.immich.loadbalancer.server.port=2283"
       - "traefik.docker.network=frontend"
-    restart: unless-stopped
-
-  - service_name: immich-microservices
-    active: true
-    container_name: immich-microservices
-    image: ghcr.io/immich-app/immich-server:v1.120.2@sha256:99f97cb61cd1b49c23fbee46a0ed067f171970518d8834c7e8b2dd3ac0d39c63
-    command: ["start.sh", "microservices"]
-    volumes:
-      - photos:/usr/src/app/upload
-      - /etc/localtime:/etc/localtime:ro
-    environment:
-      - "TZ=America/Boise"
-      - "TYPESENSE_ENABLED=true"
-      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
-      - "DB_PASSWORD={{ immich_pg_password }}"
-      - "DB_HOSTNAME=immich-postgres"
-      - "DB_USERNAME=postgres"
-      - "DB_DATABASE_NAME=immich"
-      - "REDIS_HOSTNAME=immich-redis"
-      - "IMMICH_WEB_URL=http://immich-web:3000"
-      - "IMMICH_SERVER_URL=http://immich-server:3001"
-    depends_on:
-      - name: redis
-      - name: database
-    networks:
-      - default
     restart: unless-stopped
 
   - service_name: immich-machine-learning
@@ -75,15 +42,11 @@ containers:
       - ./model-cache:/cache
     environment:
       - "TZ=America/Boise"
-      - "TYPESENSE_ENABLED=true"
-      - "TYPESENSE_API_KEY={{ immich_tp_api_key}}"
       - "DB_PASSWORD={{ immich_pg_password }}"
       - "DB_HOSTNAME=immich-postgres"
       - "DB_USERNAME=postgres"
       - "DB_DATABASE_NAME=immich"
       - "REDIS_HOSTNAME=immich-redis"
-      - "IMMICH_WEB_URL=http://immich-web:3000"
-      - "IMMICH_SERVER_URL=http://immich-server:3001"
     networks:
       - default
     restart: unless-stopped
@@ -95,7 +58,7 @@ containers:
     restart: unless-stopped
     healthcheck:
       - name: test
-        value: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+        value: redis-cli ping || exit 1
     networks:
       - default
 
@@ -114,15 +77,22 @@ containers:
     networks:
       - default
     restart: unless-stopped
-    healthcheck:
-      - name: test
-        value: pg_isready --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' || exit 1; Chksum="$$(psql --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')"; echo "checksum failure count is $$Chksum"; [ "$$Chksum" = '0' ] || exit 1
-      - name: interval
-        value: 5m
-      - name: start_interval
-        value: 30s
-      - name: start_period
-        value: 5m
+    command:
+      [
+        'postgres',
+        '-c',
+        'shared_preload_libraries=vectors.so',
+        '-c',
+        'search_path="$$user", public, vectors',
+        '-c',
+        'logging_collector=on',
+        '-c',
+        'max_wal_size=2GB',
+        '-c',
+        'shared_buffers=512MB',
+        '-c',
+        'wal_compression=on',
+      ]
 
 networks:
   - network_name: frontend
