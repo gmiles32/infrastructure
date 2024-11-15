@@ -3,37 +3,48 @@ containers:
   - service_name: nextcloud
     active: true
     container_name: nextcloud
-    image: nextcloud:stable-fpm-alpine
-    restart: always
+    image: nextcloud:apache
+    user: 1000:1000
+    environment:
+      - POSTGRES_HOST=nextcloud-postgres
+      - POSTGRES_PASSWORD={{ nextcloud_pg_password}}
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+      - NEXTCLOUD_ADMIN_USER={{ nextcloud_admin_user }}
+      - NEXTCLOUD_ADMIN_PASSWORD={{ nextcloud_admin_password }}
+      - NEXTCLOUD_TRUSTED_DOMAINS=192.168.5.15 local.flaskforge.com
+      - SMTP_HOST={{ smtp_endpoint }}
+      - SMTP_SECURE=tls 
+      - SMTP_PORT=465        
+      - SMTP_NAME={{ smtp_username }}
+      - SMTP_PASSWORD={{ smtp_password }}
+      - MAIL_FROM_ADDRESS=nextcloud
+      - MAIL_DOMAIN={{ nextcloud_mail_domain }}
     ports:
       - 8080:80
-    links:
-      - db
+    restart: always
     volumes:
       - nextcloud-data:/var/www/html
-    environment:
-      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_HOST=db
-
-  - service_name: db
+    links:
+      - nextcloud-postgres
+  - service_name: database
     active: true
-    container_name: db
-    image: mariadb:10.5
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    volumes:
-      - nextcloud-db:/var/lib/mysql
+    container_name: nextcloud-postgres
+    image: postgres:15@sha256:eb3747f5d0a92195ca486d2f15d9a4ee5e9461b0332fe87fbc59069490a5c659
+    user: 1000:1000
     environment:
-      - MYSQL_ROOT_PASSWORD={{ nextcloud_mysql_root_password }}
-      - MYSQL_PASSWORD={{ nextcloud_mysql_password }}
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
+      - POSTGRES_PASSWORD={{ nextcloud_pg_password }}
+      - POSTGRES_DB=nextcloud
+      - POSTGRES_USER=nextcloud
+    restart: always
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    expose:
+      - 5432
 
 networks: []
 
-volumes: 
+volumes:
   - volume_name: nextcloud-data
     driver: local
     driver_opts:
@@ -43,12 +54,3 @@ volumes:
         value: nfsvers=4,addr={{ nas }},rw
       - name: device
         value: ":/mnt/proton/containers/nextcloud-data"
-  - volume_name: nextcloud-db
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/nextcloud-db"

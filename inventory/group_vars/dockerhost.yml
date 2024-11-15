@@ -28,7 +28,7 @@ services:
   - traefik
   - calibre
   - omada
-  # - homepage
+  - scrutiny
   - stirling-pdf
   - paperless
   - miniflux

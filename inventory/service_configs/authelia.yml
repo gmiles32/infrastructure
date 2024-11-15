@@ -31,3 +31,5 @@ containers:
 networks:
   - network_name: frontend
     external: true
+
+volumes: []
