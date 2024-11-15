@@ -1,7 +1,7 @@
 containers:
   - service_name: traefik
     active: true
-    image: traefik:v3.2.0
+    image: traefik:v3.2.0@sha256:d12741b971f5c833919db2b680191dc23d5d96ef17e41a914e3c593a8c663ac4
     container_name: traefik
     restart: unless-stopped
     security_opt:
