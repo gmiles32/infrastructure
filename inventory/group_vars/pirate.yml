@@ -24,15 +24,16 @@ interface: ens18
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
-  - papermc
+  - arr-stack
 services_config_path: ../inventory/service_configs
 
 # docker_start
-docker_networks:
-  - frontend
-ports:
-  # PaperMC
-  - port_number: "25565"
-    protocol: "tcp"
+docker_networks: []
+ports: []
+  # # Gluetun
+  # - port_number: "6681"
+  #   protocol: "tcp"
+  # - port_number: "6681"
+  #   protocol: "udp"
 
 commands: []

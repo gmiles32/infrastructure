@@ -1,0 +1,120 @@
+containers:
+  - service_name: gluetun
+    active: true 
+    container_name: gluetun
+    image: qmcgaw/gluetun:v3.39.1
+    hostname: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - 6881:6881
+      - 6881:6881/udp
+      - 8085:8085 # qbittorrent
+      - 8989:8989 # Sonarr
+      - 9696:9696 # Prowlarr
+      - 7878:7878 # Radarr
+      - 8192:8192 # Flaresolverr
+      - 8787:8787 # Readarr
+    environment:
+      - "VPN_SERVICE_PROVIDER=mullvad"
+      - "VPN_TYPE=wireguard"
+      - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
+      - "WIREGUARD_ADDRESSES=10.73.170.242/32"
+      # - "SERVER_CITIES=Stockholm"
+      - "TZ=America/Los_Angeles"
+      - "UPDATER_PERIOD=24h"
+    volumes:
+      - ./gluetun:/gluetun
+
+  - service_name: qbittorrent
+    active: true
+    container_name: qbittorrent
+    image: lscr.io/linuxserver/qbittorrent
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Los_Angeles
+      - WEBUI_PORT=8085
+    volumes:
+      - ./qbittorrent/config:/config
+      - /mnt/data/torrents:/downloads/torrents
+    depends_on: 
+      - name: gluetun
+    restart: unless-stopped
+
+  - service_name: flaresolverr
+    active: true
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    network_mode: "service:gluetun"
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Etc/UTC
+    restart: unless-stopped
+
+  - service_name: sonarr
+    active: true
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./sonarr/data:/config
+      - /mnt/data/media/tv:/tv #optional
+      - /mnt/data:/data #optional
+    restart: unless-stopped
+
+  - service_name: prowlarr
+    active: true
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./prowlarr/data:/config
+    restart: unless-stopped
+
+  - service_name: radarr
+    active: true 
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./radarr/data:/config
+      - /mnt/data/media/movies:/movies #optional
+      - /mnt/data:/downloads #optional
+    restart: unless-stopped
+
+  - service_name: readarr
+    active: true
+    image: lscr.io/linuxserver/readarr:develop
+    container_name: readarr
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./readarr/data:/config
+      - /mnt/data/media/books:/books #optional
+      - /mnt/data:/data #optional
+    restart: unless-stopped
+
+networks: []
+
+volumes: []

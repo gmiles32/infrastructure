@@ -16,7 +16,7 @@
         - full
     - role: docker_firewalld
       tags:
-        - docker
+        - firewalld
         - full
     - role: docker_compose_generator
       tags:
