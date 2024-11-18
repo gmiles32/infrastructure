@@ -40,7 +40,7 @@ containers:
       - WEBUI_PORT=8085
     volumes:
       - ./qbittorrent/config:/config
-      - /mnt/data/torrents:/downloads/torrents
+      - arr-torrents:/downloads/torrents
     depends_on: 
       - name: gluetun
     restart: unless-stopped
@@ -68,8 +68,8 @@ containers:
       - TZ=Etc/UTC
     volumes:
       - ./sonarr/data:/config
-      - /mnt/data/media/tv:/tv #optional
-      - /mnt/data:/data #optional
+      - tv:/tv #optional
+      - arr-data:/data #optional
     restart: unless-stopped
 
   - service_name: prowlarr
@@ -96,8 +96,8 @@ containers:
       - TZ=Etc/UTC
     volumes:
       - ./radarr/data:/config
-      - /mnt/data/media/movies:/movies #optional
-      - /mnt/data:/downloads #optional
+      - movies:/movies #optional
+      - arr-data:/data #optional
     restart: unless-stopped
 
   - service_name: readarr
@@ -111,10 +111,55 @@ containers:
       - TZ=Etc/UTC
     volumes:
       - ./readarr/data:/config
-      - /mnt/data/media/books:/books #optional
-      - /mnt/data:/data #optional
+      - books:/books #optional
+      - arr-data:/data #optional
     restart: unless-stopped
 
 networks: []
 
-volumes: []
+volumes:
+  - volume_name: arr-torrents
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-data/torrents"
+  - volume_name: arr-data
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-data"
+  - volume_name: books
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-data/media/books"
+  - volume_name: tv
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-data/media/tv"
+  - volume_name: movies
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-data/media/movies"
