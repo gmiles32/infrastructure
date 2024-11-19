@@ -22,11 +22,11 @@ containers:
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
       - "WIREGUARD_ADDRESSES=10.73.170.242/32"
-      # - "SERVER_CITIES=Stockholm"
+      - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
     volumes:
-      - ./gluetun:/gluetun
+      - /mnt/arr-stack/configs/gluetun:/gluetun
 
   - service_name: qbittorrent
     active: true
@@ -39,8 +39,8 @@ containers:
       - TZ=America/Los_Angeles
       - WEBUI_PORT=8085
     volumes:
-      - ./qbittorrent/config:/config
-      - arr-torrents:/downloads/torrents
+      - ./data/configs/qbittorrent/config:/config
+      - ./data/downloads:/downloads
     depends_on: 
       - name: gluetun
     restart: unless-stopped
@@ -59,107 +59,59 @@ containers:
 
   - service_name: sonarr
     active: true
-    image: lscr.io/linuxserver/sonarr:latest@sha256:a30d870ae503e617e84909367c8f19096567ef60834fa8d81d86d17a13e50d1a
+    image: binhex/arch-sonarr
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
     volumes:
-      - ./sonarr/data:/config
-      - tv:/tv #optional
-      - arr-data:/data #optional
+      - ./data/configs/sonarr:/config
+      - ./data:/data
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
   - service_name: prowlarr
     active: true
-    image: lscr.io/linuxserver/prowlarr:latest@sha256:7cd854daf61f7f2f68b8680850d86519409a61247e556ff41a3aae0e0cc3fb10
+    image: binhex/arch-prowlarr
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
     volumes:
-      - ./prowlarr/data:/config
+      - ./data/configs/prowlarr:/config
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
   - service_name: radarr
     active: true 
-    image: lscr.io/linuxserver/radarr:latest@sha256:3329fbf778701cf53703b342b3a84da31caafec970ef9310be5723dd057666dc
-    container_name: radarr
+    image: binhex/arch-radarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
     volumes:
-      - ./radarr/data:/config
-      - movies:/movies #optional
-      - arr-data:/data #optional
+      - ./data:/data
+      - ./data/configs/radarr:/config
+      - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
-  - service_name: readarr
-    active: true
-    image: lscr.io/linuxserver/readarr:develop@sha256:8cc3a892935076c45c829755ae9858b52d4cf5c648d046bb0a537d36dbb07cec
-    container_name: readarr
-    network_mode: "service:gluetun"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-    volumes:
-      - ./readarr/data:/config
-      - books:/books #optional
-      - arr-data:/data #optional
-    restart: unless-stopped
+  # - service_name: readarr
+  #   active: true
+  #   image: lscr.io/linuxserver/readarr:develop@sha256:8cc3a892935076c45c829755ae9858b52d4cf5c648d046bb0a537d36dbb07cec
+  #   container_name: readarr
+  #   network_mode: "service:gluetun"
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #   volumes:
+  #     - ./readarr/data:/config
+  #     - books:/books #optional
+  #     - arr-data:/data #optional
+  #   restart: unless-stopped
 
 networks: []
 
-volumes:
-  - volume_name: arr-torrents
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/arr-data/torrents"
-  - volume_name: arr-data
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/arr-data"
-  - volume_name: books
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/arr-data/media/books"
-  - volume_name: tv
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/arr-data/media/tv"
-  - volume_name: movies
-    driver: local
-    driver_opts:
-      - name: type
-        value: nfs
-      - name: o
-        value: nfsvers=4,addr={{ nas }},rw
-      - name: device
-        value: ":/mnt/proton/containers/arr-data/media/movies"
+volumes: []

@@ -29,10 +29,12 @@ services:
   - calibre
   - omada
   - scrutiny
-  - stirling-pdf
+  # - stirling-pdf
   - paperless
   - miniflux
   - immich
+  - homepage
+  - jellyfin
 
 services_config_path: ../inventory/service_configs
 nas: "192.168.5.11"
@@ -77,4 +79,9 @@ ports:
   # Reddit-RSS
   # - port_number: "8080"
   #   protocol: "tcp"
+  # Jellyfin
+  - port_number: "8096"
+    protocol: "tcp"
+  - port_number: "5055"
+    protocol: "tcp"
 commands: []

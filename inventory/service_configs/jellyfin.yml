@@ -1,0 +1,70 @@
+compose_schema_version: "3"
+containers:
+  - service_name: jellyfin
+    active: true
+    image: jellyfin/jellyfin
+    env:
+      - PUID=1000
+      - GUID=1000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./jellyfin:/config
+      - arr-media:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.entrypoints=web"
+      - "traefik.http.routers.jellyfin.rule=Host(`jellyfin.{{ domain }}`)"
+      - "traefik.http.middlewares.jellyfin-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.jellyfin.middlewares=jellyfin-https-redirect"
+      - "traefik.http.routers.jellyfin-secure.entrypoints=websecure"
+      - "traefik.http.routers.jellyfin-secure.rule=Host(`jellyfin.{{ domain }}`)"
+      - "traefik.http.routers.jellyfin-secure.tls=true"
+      - "traefik.http.routers.jellyfin-secure.service=jellyfin"
+      - "traefik.http.services.jellyfin.loadbalancer.server.port=8096"
+      - "traefik.docker.network=frontend"
+    networks:
+        - frontend
+
+  - service_name: jellyseerr
+    active: true
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=1000
+      - GUID=1000
+      - LOG_LEVEL=debug
+      - TZ=America/Los_Angeles
+    volumes:
+      - ./jellyseerr:/app/config
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyseerr.entrypoints=web"
+      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.{{ domain }}`)"
+      - "traefik.http.middlewares.jellyseerr-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.jellyseerr.middlewares=jellyseerr-https-redirect"
+      - "traefik.http.routers.jellyseerr-secure.entrypoints=websecure"
+      - "traefik.http.routers.jellyseerr-secure.rule=Host(`jellyseerr.{{ domain }}`)"
+      - "traefik.http.routers.jellyseerr-secure.tls=true"
+      - "traefik.http.routers.jellyseerr-secure.service=jellyseerr"
+      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
+      - "traefik.docker.network=frontend"
+    network:
+      - frontend
+    ports:
+      - 5055:5055
+
+networks:
+  - network_name: frontend
+    external: true
+
+volumes:
+  - volume_name: arr-media
+    driver: local
+    driver_opts:
+      - name: type
+        value: nfs
+      - name: o
+        value: nfsvers=4,addr={{ nas }},rw
+      - name: device
+        value: ":/mnt/proton/containers/arr-media"
