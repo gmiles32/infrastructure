@@ -16,17 +16,20 @@ containers:
       - 9696:9696 # Prowlarr
       - 7878:7878 # Radarr
       - 8192:8192 # Flaresolverr
-      - 8787:8787 # Readarr
+      - 5299:5299 # Lazylibrarian
+      - 8080:8080 # Calibre
     environment:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
-      - "WIREGUARD_ADDRESSES=10.73.170.242/32"
-      - "SERVER_CITIES=Stockholm"
+      - "WIREGUARD_ADDRESSES=10.70.247.48/32"
+      # - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
     volumes:
       - /mnt/arr-stack/configs/gluetun:/gluetun
+    dns:
+      - 1.1.1.1
 
   - service_name: qbittorrent
     active: true
@@ -59,7 +62,7 @@ containers:
 
   - service_name: sonarr
     active: true
-    image: binhex/arch-sonarr
+    image: lscr.io/linuxserver/sonarr
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
@@ -73,7 +76,7 @@ containers:
 
   - service_name: prowlarr
     active: true
-    image: binhex/arch-prowlarr
+    image: lscr.io/linuxserver/prowlarr
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
@@ -86,7 +89,7 @@ containers:
 
   - service_name: radarr
     active: true 
-    image: binhex/arch-radarr
+    image: lscr.io/linuxserver/radarr
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
@@ -97,20 +100,37 @@ containers:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
-  # - service_name: readarr
-  #   active: true
-  #   image: lscr.io/linuxserver/readarr:develop@sha256:8cc3a892935076c45c829755ae9858b52d4cf5c648d046bb0a537d36dbb07cec
-  #   container_name: readarr
-  #   network_mode: "service:gluetun"
-  #   environment:
-  #     - PUID=1000
-  #     - PGID=1000
-  #     - TZ=Etc/UTC
-  #   volumes:
-  #     - ./readarr/data:/config
-  #     - books:/books #optional
-  #     - arr-data:/data #optional
-  #   restart: unless-stopped
+  - service_name: lazylibrarian
+    active: true
+    image: lscr.io/linuxserver/lazylibrarian
+    container_name: lazylibrarian
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DOCKER_MODS=linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg
+    volumes:
+      - ./data/configs/lazylibrarian:/config
+      - /etc/localtime:/etc/localtime:ro
+      - ./data:/data
+    restart: unless-stopped
+
+  - service_name: calibre
+    active: true
+    image: lscr.io/linuxserver/calibre:latest
+    container_name: calibre
+    network_mode: "service:gluetun"
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DOCKER_MODS=linuxserver/mods:universal-package-install
+      - INSTALL_PACKAGES=libfuse2|git|gdb
+    volumes:
+      - ./data/media/books:/media
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
 
 networks: []
 

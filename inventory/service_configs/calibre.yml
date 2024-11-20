@@ -11,8 +11,8 @@ containers:
       - "DOCKER_MODS=linuxserver/mods:universal-calibre" #optional
       - "OAUTHLIB_RELAX_TOKEN_SCOPE=1" #optional
     volumes:
-      - "./config:/config"
-      - "library:/books"
+      - ./config:/config
+      - arr-media:/media
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -35,7 +35,7 @@ networks:
     external: true
 
 volumes:
-  - volume_name: library
+  - volume_name: arr-media
     driver: local
     driver_opts:
       - name: type 
@@ -43,4 +43,4 @@ volumes:
       - name: o
         value: "nfsvers=4,addr={{ nas }},rw"
       - name: device
-        value: ":/mnt/proton/containers/calibre-library"
+        value: ":/mnt/proton/containers/arr-media"     
