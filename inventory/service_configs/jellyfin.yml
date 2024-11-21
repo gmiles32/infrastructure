@@ -2,7 +2,7 @@ compose_schema_version: "3"
 containers:
   - service_name: jellyfin
     active: true
-    image: jellyfin/jellyfin
+    image: jellyfin/jellyfin@sha256:17c3a8d9dddb97789b5f37112840ebf96566442c14d4754193a6c2eb154bc221
     env:
       - PUID=1000
       - GUID=1000
@@ -27,7 +27,7 @@ containers:
 
   - service_name: jellyseerr
     active: true
-    image: fallenbagel/jellyseerr:latest
+    image: fallenbagel/jellyseerr:latest@sha256:af5563771964282e5bfb6a4f30b05c75c8d30661a920f0399086f575217d0573
     container_name: jellyseerr
     environment:
       - PUID=1000
