@@ -62,7 +62,7 @@ containers:
 
   - service_name: sonarr
     active: true
-    image: lscr.io/linuxserver/sonarr
+    image: lscr.io/linuxserver/sonarr@sha256:a30d870ae503e617e84909367c8f19096567ef60834fa8d81d86d17a13e50d1a
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
@@ -76,7 +76,7 @@ containers:
 
   - service_name: prowlarr
     active: true
-    image: lscr.io/linuxserver/prowlarr
+    image: lscr.io/linuxserver/prowlarr@sha256:c492863c8e1da876a6be3d0d5836f25b3547c0a3293f0e9f09cd198ebf47ea37
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
@@ -89,7 +89,7 @@ containers:
 
   - service_name: radarr
     active: true 
-    image: lscr.io/linuxserver/radarr
+    image: lscr.io/linuxserver/radarr@sha256:c60610599d681dc7ea0aa1a5edfc1637ff4b5fb062872aea1539d291c835c4b3
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
@@ -102,7 +102,7 @@ containers:
 
   - service_name: lazylibrarian
     active: true
-    image: lscr.io/linuxserver/lazylibrarian
+    image: lscr.io/linuxserver/lazylibrarian@sha256:92cab9e182522260693688e4192237e849488e5ab575a52adff5cd7dcec7f1f8
     container_name: lazylibrarian
     network_mode: "service:gluetun"
     environment:
@@ -117,7 +117,7 @@ containers:
 
   - service_name: calibre
     active: true
-    image: lscr.io/linuxserver/calibre:latest
+    image: lscr.io/linuxserver/calibre:latest@sha256:1dad366bde7d0d4d705ba9a4cfdf89343b960ac2c834e8b5f21d2090b9e4da38
     container_name: calibre
     network_mode: "service:gluetun"
     security_opt:
