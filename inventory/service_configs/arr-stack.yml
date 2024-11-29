@@ -117,7 +117,7 @@ containers:
 
   - service_name: calibre
     active: true
-    image: lscr.io/linuxserver/calibre:latest@sha256:e1c5964a0ce8781978e6fbfd0702804c189819aa4d5fadf2ade399678b5b2120
+    image: lscr.io/linuxserver/calibre:latest@sha256:b5144796e48598ed5a672fd9c69fb41888463e3c038ea6c562efafaed7917f21
     container_name: calibre
     network_mode: "service:gluetun"
     security_opt:
