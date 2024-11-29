@@ -102,7 +102,7 @@ containers:
 
   - service_name: lazylibrarian
     active: true
-    image: lscr.io/linuxserver/lazylibrarian@sha256:9be13dc8feb150549fe1a6719f2859fef82412f0c4a9a60fbde21d9599786f14
+    image: lscr.io/linuxserver/lazylibrarian@sha256:435aa58404df35c3b5429213865e1f3f5f2588a0f88344f5f02824678a7af586
     container_name: lazylibrarian
     network_mode: "service:gluetun"
     environment:
