@@ -12,17 +12,18 @@ containers:
       - 6881:6881
       - 6881:6881/udp
       - 8085:8085 # qbittorrent
+      - 6789:6789 # nzbget
       - 8989:8989 # Sonarr
       - 9696:9696 # Prowlarr
       - 7878:7878 # Radarr
       - 8192:8192 # Flaresolverr
-      - 5299:5299 # Lazylibrarian
-      - 8080:8080 # Calibre
+      # - 5299:5299 # Lazylibrarian
+      # - 8080:8080 # Calibre
     environment:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
-      - "WIREGUARD_ADDRESSES=10.70.247.48/32"
+      - "WIREGUARD_ADDRESSES=10.66.124.179"
       # - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
@@ -41,9 +42,29 @@ containers:
       - PGID=1000
       - TZ=America/Los_Angeles
       - WEBUI_PORT=8085
+      - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod:latest
     volumes:
       - ./data/configs/qbittorrent/config:/config
-      - ./data/downloads:/downloads
+      - ./data/downloads/torrents:/downloads
+      - ./data/configs/qbittorrent/vuetorrent:/vuetorrent
+    depends_on: 
+      - name: gluetun
+    restart: unless-stopped
+
+  - service_name: nzbget
+    active: true
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    network_mode: "service:gluetun"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - NZBGET_USER=admin #optional
+      - NZBGET_PASS={{ nzbget_admin_password }} #optional
+    volumes:
+      - ./data/configs/nzbget:/config
+      - ./data/downloads/usenet:/downloads #optional
     depends_on: 
       - name: gluetun
     restart: unless-stopped
@@ -100,37 +121,37 @@ containers:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
 
-  - service_name: lazylibrarian
-    active: true
-    image: lscr.io/linuxserver/lazylibrarian@sha256:435aa58404df35c3b5429213865e1f3f5f2588a0f88344f5f02824678a7af586
-    container_name: lazylibrarian
-    network_mode: "service:gluetun"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - DOCKER_MODS=linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg
-    volumes:
-      - ./data/configs/lazylibrarian:/config
-      - /etc/localtime:/etc/localtime:ro
-      - ./data:/data
-    restart: unless-stopped
+  # - service_name: lazylibrarian
+  #   active: true
+  #   image: lscr.io/linuxserver/lazylibrarian@sha256:ed1928a210b457c4b9c7ce5a27e6cc9f33f3c815dbe49730096eb64bcde2f491
+  #   container_name: lazylibrarian
+  #   network_mode: "service:gluetun"
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - DOCKER_MODS=linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg
+  #   volumes:
+  #     - ./data/configs/lazylibrarian:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - ./data:/data
+  #   restart: unless-stopped
 
-  - service_name: calibre
-    active: true
-    image: lscr.io/linuxserver/calibre:latest@sha256:b5144796e48598ed5a672fd9c69fb41888463e3c038ea6c562efafaed7917f21
-    container_name: calibre
-    network_mode: "service:gluetun"
-    security_opt:
-      - seccomp:unconfined
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - DOCKER_MODS=linuxserver/mods:universal-package-install
-      - INSTALL_PACKAGES=libfuse2|git|gdb
-    volumes:
-      - ./data/media/books:/media
-      - /etc/localtime:/etc/localtime:ro
-    restart: unless-stopped
+  # - service_name: calibre
+  #   active: true
+  #   image: lscr.io/linuxserver/calibre:latest@sha256:1dad366bde7d0d4d705ba9a4cfdf89343b960ac2c834e8b5f21d2090b9e4da38
+  #   container_name: calibre
+  #   network_mode: "service:gluetun"
+  #   security_opt:
+  #     - seccomp:unconfined
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - DOCKER_MODS=linuxserver/mods:universal-package-install
+  #     - INSTALL_PACKAGES=libfuse2|git|gdb
+  #   volumes:
+  #     - ./data/media/books:/media
+  #     - /etc/localtime:/etc/localtime:ro
+  #   restart: unless-stopped
 
 networks: []
 
