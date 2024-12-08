@@ -110,7 +110,7 @@ containers:
 
   - service_name: radarr
     active: true 
-    image: lscr.io/linuxserver/radarr@sha256:2e37ae0af799e01f413a97ee82c7e581a5b635816df0380889bc65d554dbeb17
+    image: lscr.io/linuxserver/radarr@sha256:18d7873c8b773c10944c475fe96ca8ae79186512d3c6f403bcbd4409c9c4acfc
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
