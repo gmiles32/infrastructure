@@ -2,7 +2,7 @@ compose_schema_version: "3.3"
 containers:
   - service_name: homepage
     active: true
-    image: ghcr.io/gethomepage/homepage:v0.10.2@sha256:ef3c14d406a513eab1b9839a3b6a3bd189c315a1133b5b522d139e22f8bedc25
+    image: ghcr.io/gethomepage/homepage:v0.10.4@sha256:bf16a9f04a09d96714f723d800888033e9b19039ef546478322bb7ba93791187
     container_name: homepage
     volumes:
       - ./config:/app/config # Make sure your local config directory exists
