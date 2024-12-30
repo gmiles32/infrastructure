@@ -27,7 +27,7 @@ containers:
 
   - service_name: jellyseerr
     active: true
-    image: fallenbagel/jellyseerr:latest@sha256:7cbcd295643e2f443195b89e0c81775d19d60e84db643053a5138913d7d5e5e7
+    image: fallenbagel/jellyseerr:latest@sha256:fe72f4b341fa5c3275826a39aebfff23cbd552c956b0ab2d51dfba6a49b528f8
     container_name: jellyseerr
     environment:
       - PUID=1000
