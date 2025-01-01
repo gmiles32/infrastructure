@@ -2,7 +2,7 @@ compose_schema_version: '3.3'
 containers:
   - service_name: authelia
     active: true
-    image: authelia/authelia:4.38.17@sha256:bd0b56ab682ecdf994cc66bbbf75e3ab437a3e4aea4c707eeea0c2fca6cf945e
+    image: authelia/authelia:4.38.18@sha256:a5e6fa4b1dbdc296f80f9175157b145a0598690ec8cd4d6e105cd4498fe0c731
     container_name: authelia
     user: 1000:1000
     volumes:
