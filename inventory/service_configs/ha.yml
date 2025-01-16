@@ -13,6 +13,9 @@ containers:
     restart: unless-stopped
     privileged: true
     network_mode: host
+    environment:
+      - PUID=1000
+      - GUID=1000
 
 networks: []
 
