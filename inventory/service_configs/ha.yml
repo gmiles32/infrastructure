@@ -5,7 +5,7 @@ containers:
   - service_name: homeassistant
     active: true
     container_name: homeassistant
-    image: "ghcr.io/home-assistant/home-assistant:stable@sha256:a9fab1c5cb63a7c721d38b2ba40cdcac3acb9cd70be3fe3838336f71e73d9443"
+    image: "ghcr.io/home-assistant/home-assistant:stable@sha256:9fb37db8a70364e81b3efa0dd59630a94606aab825e04068256753f65d10174e"
     volumes:
       - ./config:/config
       - /etc/localtime:/etc/localtime:ro
