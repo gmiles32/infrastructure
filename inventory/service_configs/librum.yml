@@ -42,7 +42,7 @@ containers:
 
   - service_name: librum-db
     active: true
-    image: mariadb:11.7.2@sha256:8f514f792e669d7fc6ae73785c6d1b481b8d8a62b070b709ac9f979cd40ded67
+    image: mariadb:11.7.2@sha256:310d29fbb58169dcddb384b0ff138edb081e2773d6e2eceb976b3668089f2f84
     # hostname: mariadb
     container_name: librum-db
     user: 1000:1000
