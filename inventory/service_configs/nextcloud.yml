@@ -30,7 +30,7 @@ containers:
   - service_name: database
     active: true
     container_name: nextcloud-postgres
-    image: postgres:15@sha256:b3a3b666dfb3a7dca6858ef90bad3557da4d4e1532c090f6fe6d4de76d98ab6f
+    image: postgres:15@sha256:7c739fa360a45bd122b8c593122393e8a5c6be6d3c43e046b07ae74c20cffee2
     user: 1000:1000
     environment:
       - POSTGRES_PASSWORD={{ nextcloud_pg_password }}
