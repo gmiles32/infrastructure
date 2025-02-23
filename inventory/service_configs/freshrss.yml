@@ -2,7 +2,7 @@ compose_schema_version: "3.2"
 containers:
   - service_name: freshrss
     active: true
-    image: linuxserver/freshrss:1.25.0@sha256:ba3ce36d7e0d0845626663a966dbaa404539b30c1e69ef266996a657a1e45951
+    image: linuxserver/freshrss:1.26.0@sha256:5cccae5854c93c7108b9952c2badaa3677c4e8ceadbb610f476c518c617eaee2
     container_name: freshrss
     environment:
       - PUID=1000
