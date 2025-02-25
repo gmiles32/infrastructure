@@ -2,7 +2,7 @@ compose_scheme_version: '3'
 containers: 
   - service_name: headscale
     active: true
-    image: headscale/headscale:latest@sha256:97febecbe6cb92b956096ec51b9da60f670df5d0bc46f7ccd86d015c95efaf16
+    image: headscale/headscale:latest@sha256:a7a8ae9616bb964a3eed8101ebb020213f73668142a84806ec37a5eeb2c1fceb
     container_name: headscale
     volumes:
 <<<<<<< HEAD
