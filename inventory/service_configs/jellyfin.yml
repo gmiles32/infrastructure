@@ -37,20 +37,6 @@ containers:
     volumes:
       - ./jellyseerr:/app/config
     restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.jellyseerr.entrypoints=web"
-      - "traefik.http.routers.jellyseerr.rule=Host(`jellyseerr.{{ domain }}`)"
-      - "traefik.http.middlewares.jellyseerr-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.jellyseerr.middlewares=jellyseerr-https-redirect"
-      - "traefik.http.routers.jellyseerr-secure.entrypoints=websecure"
-      - "traefik.http.routers.jellyseerr-secure.rule=Host(`jellyseerr.{{ domain }}`)"
-      - "traefik.http.routers.jellyseerr-secure.tls=true"
-      - "traefik.http.routers.jellyseerr-secure.service=jellyseerr"
-      - "traefik.http.services.jellyseerr.loadbalancer.server.port=5055"
-      - "traefik.docker.network=frontend"
-    network:
-      - frontend
     ports:
       - 5055:5055
 

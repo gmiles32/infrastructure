@@ -23,12 +23,12 @@ containers:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
-      - "WIREGUARD_ADDRESSES=10.66.124.179"
+      - "WIREGUARD_ADDRESSES=10.75.6.178"
       # - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
     volumes:
-      - /mnt/arr-stack/configs/gluetun:/gluetun
+      - ./data/configs/gluetun:/gluetun
     dns:
       - 1.1.1.1
 
@@ -52,7 +52,7 @@ containers:
     restart: unless-stopped
 
   - service_name: nzbget
-    active: true
+    active: false
     image: lscr.io/linuxserver/nzbget:latest@sha256:9c90b171d7394d18a6bc9100125da906a60481dc721228b238829a38a142f4f8
     container_name: nzbget
     network_mode: "service:gluetun"
