@@ -83,7 +83,7 @@ containers:
 
   - service_name: sonarr
     active: true
-    image: lscr.io/linuxserver/sonarr@sha256:aa566541ea012f41dd0eedc8bbc67910456713b750d1ace663950ce934269036
+    image: lscr.io/linuxserver/sonarr@sha256:7342ef32dd9cd6d13638765cfb8034edd4c80b0584f427159fd7f5ddeef5399d
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
