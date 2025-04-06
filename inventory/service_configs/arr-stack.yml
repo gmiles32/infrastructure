@@ -23,7 +23,7 @@ containers:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
-      - "WIREGUARD_ADDRESSES=10.75.6.178"
+      - "WIREGUARD_ADDRESSES=10.75.165.134"
       # - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
@@ -53,7 +53,7 @@ containers:
 
   - service_name: nzbget
     active: false
-    image: lscr.io/linuxserver/nzbget:latest@sha256:00dced46c272d6d7fc7b7d1ae854f48ba15b4c96cfae11829063a85f02b98ddc
+    image: lscr.io/linuxserver/nzbget:latest@sha256:fb5d03c6ac45705dd2198637b539ff44810af753126d10bc326fbf028aa3c053
     container_name: nzbget
     network_mode: "service:gluetun"
     environment:
@@ -83,7 +83,7 @@ containers:
 
   - service_name: sonarr
     active: true
-    image: lscr.io/linuxserver/sonarr@sha256:7342ef32dd9cd6d13638765cfb8034edd4c80b0584f427159fd7f5ddeef5399d
+    image: lscr.io/linuxserver/sonarr@sha256:7fe49f99201de94a277c577dcce5ef8f1789ead1056c8cf758fac7bf4e601d16
     container_name: sonarr
     network_mode: "service:gluetun"
     environment:
@@ -110,7 +110,7 @@ containers:
 
   - service_name: radarr
     active: true 
-    image: lscr.io/linuxserver/radarr@sha256:fe049905ecdfaedf6f37698a3974261c1ef7e5bb165bed6c6d9616c7b9002a88
+    image: lscr.io/linuxserver/radarr@sha256:eccd80c53e55572b91ae205eb572e16b3e012631892e74be7ccedb6d5fafb630
     network_mode: "service:gluetun"
     environment:
       - PUID=1000

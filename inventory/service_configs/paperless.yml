@@ -48,6 +48,11 @@ containers:
       - "PAPERLESS_ENABLE_HTTP_REMOTE_USER=TRUE"
       - "PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME=HTTP_REMOTE_USER"
       - "PAPERLESS_CSRF_TRUSTED_ORIGINS='https://paperless.{{ domain }}'"
+      - "PAPERLESS_CONSUMPTION_DIR=/usr/src/paperless/consume"
+      - "PAPERLESS_CONSUMER_POLLING=60"
+      - "PAPERLESS_TIKA_ENABLED=true"
+      - "PAPERLESS_TIKA_ENDPOINT=http://tika:9998"
+      - "PAPERLESS_TIKA_GOTENBERG_ENDPOINT=http://gotenberg:3000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.paperless.entrypoints=web"
@@ -65,6 +70,25 @@ containers:
       - default
       - frontend
       - backend
+
+  - service_name: gotenberg
+    active: true
+    image: docker.io/gotenberg/gotenberg:8.7
+    container_name: gotenberg
+    restart: unless-stopped
+
+    # The gotenberg chromium route is used to convert .eml files. We do not
+    # want to allow external content like tracking pixels or even javascript.
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+
+  - service_name: tika
+    active: true
+    image: docker.io/apache/tika:latest
+    container_name: tika
+    restart: unless-stopped
 
 networks:
   - network_name: default
