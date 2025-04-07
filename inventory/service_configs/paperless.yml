@@ -73,7 +73,7 @@ containers:
 
   - service_name: gotenberg
     active: true
-    image: docker.io/gotenberg/gotenberg:8.7
+    image: docker.io/gotenberg/gotenberg:8.19@sha256:a55777dad95294ba2c1bfd1760c9eea4e573755589cf192d0ec6107ae08fc7e3
     container_name: gotenberg
     restart: unless-stopped
 
