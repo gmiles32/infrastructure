@@ -53,7 +53,7 @@ containers:
 
   - service_name: nzbget
     active: false
-    image: lscr.io/linuxserver/nzbget:latest@sha256:9403d318b14a378bcd487b21050e9c5ffd011b7a50e40f37d7836a93864ccb53
+    image: lscr.io/linuxserver/nzbget:latest@sha256:101cf1980074f227ff0339c4b18a5a9955344e827d0757afab7b20a1202bf700
     container_name: nzbget
     network_mode: "service:gluetun"
     environment:
