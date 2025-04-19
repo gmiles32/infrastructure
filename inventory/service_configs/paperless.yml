@@ -86,7 +86,7 @@ containers:
 
   - service_name: tika
     active: true
-    image: docker.io/apache/tika:latest
+    image: docker.io/apache/tika:latest@sha256:2c1a2e563b3a9b2e98443143cd4ca34a6a1e829e24103152a299888153479fab
     container_name: tika
     restart: unless-stopped
 
