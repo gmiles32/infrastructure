@@ -22,7 +22,7 @@ containers:
 
   - service_name: web
     active: true
-    image: 'ghcr.io/analogj/scrutiny:master-web@sha256:10c36630360cf7394cc8f72c724572faf8630ef409820295fe6c0c410aed31b9'
+    image: 'ghcr.io/analogj/scrutiny:master-web@sha256:2a2f37226d9063915288024ba9171bd404cd1d1560299478bc35696f7575ffa8'
     container_name: scrutiny-web
     ports:
       - '8080:8080'
