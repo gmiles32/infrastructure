@@ -23,7 +23,7 @@ containers:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
       - "WIREGUARD_PRIVATE_KEY={{ wireguard_private_key }}" # See https://github.com/qdm12/gluetun-wiki/blob/main/setup/providers/nordvpn.md#obtain-your-wireguard-private-key
-      - "WIREGUARD_ADDRESSES=10.75.165.134"
+      - "WIREGUARD_ADDRESSES=10.69.25.51"
       # - "SERVER_CITIES=Stockholm"
       - "TZ=America/Los_Angeles"
       - "UPDATER_PERIOD=24h"
