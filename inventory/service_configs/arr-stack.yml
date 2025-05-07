@@ -97,7 +97,7 @@ containers:
 
   - service_name: prowlarr
     active: true
-    image: lscr.io/linuxserver/prowlarr@sha256:126ead562b0fb1716e5c07db1df81f96351ae4de07b0101423cbc9317ccf012d
+    image: lscr.io/linuxserver/prowlarr@sha256:dec1e580aad36bccaeb1aba283f01a5263761905c304875a603c9a952ecfda79
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
