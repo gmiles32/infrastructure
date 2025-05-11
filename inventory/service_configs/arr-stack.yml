@@ -18,6 +18,8 @@ containers:
       - 8192:8192 # Flaresolverr
       # - 5299:5299 # Lazylibrarian
       # - 8080:8080 # Calibre
+      # - 7474:7474 # Autobrr
+      # - 9000:9000 # The Lounge
     environment:
       - "VPN_SERVICE_PROVIDER=mullvad"
       - "VPN_TYPE=wireguard"
@@ -101,6 +103,31 @@ containers:
       - ./data/configs/radarr:/config
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
+
+  # - service_name: autobrr
+  #   active: true
+  #   container_name: autobrr
+  #   image: ghcr.io/autobrr/autobrr:latest
+  #   network_mode: "service:gluetun"
+  #   restart: unless-stopped
+  #   user: 1000:1000
+  #   environment:
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - ./data/configs/autobrr:/config
+
+  # - service_name: thelounge
+  #   active: true
+  #   image: lscr.io/linuxserver/thelounge:latest
+  #   container_name: thelounge
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - TZ=Etc/UTC
+  #   volumes:
+  #     - ./data/configs/thelounge:/config
+  #   restart: unless-stopped
+  #   network_mode: "service:gluetun"
 
   # - service_name: lazylibrarian
   #   active: true
