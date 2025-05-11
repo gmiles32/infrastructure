@@ -12,7 +12,6 @@ containers:
       - 6881:6881
       - 6881:6881/udp
       - 8085:8085 # qbittorrent
-      - 6789:6789 # nzbget
       - 8989:8989 # Sonarr
       - 9696:9696 # Prowlarr
       - 7878:7878 # Radarr
@@ -45,26 +44,8 @@ containers:
       - DOCKER_MODS=ghcr.io/vuetorrent/vuetorrent-lsio-mod:latest
     volumes:
       - ./data/configs/qbittorrent/config:/config
-      - ./data/downloads/torrents:/downloads
+      - ./data/downloads:/downloads
       - ./data/configs/qbittorrent/vuetorrent:/vuetorrent
-    depends_on: 
-      - name: gluetun
-    restart: unless-stopped
-
-  - service_name: nzbget
-    active: false
-    image: lscr.io/linuxserver/nzbget:latest@sha256:552b8c82906c79a39bc9602c5d3b794a1cf9b635cd4aeb74db6f980004f108dd
-    container_name: nzbget
-    network_mode: "service:gluetun"
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - NZBGET_USER=admin #optional
-      - NZBGET_PASS={{ nzbget_admin_password }} #optional
-    volumes:
-      - ./data/configs/nzbget:/config
-      - ./data/downloads/usenet:/downloads #optional
     depends_on: 
       - name: gluetun
     restart: unless-stopped
@@ -97,7 +78,7 @@ containers:
 
   - service_name: prowlarr
     active: true
-    image: lscr.io/linuxserver/prowlarr@sha256:dec1e580aad36bccaeb1aba283f01a5263761905c304875a603c9a952ecfda79
+    image: lscr.io/linuxserver/prowlarr@sha256:126ead562b0fb1716e5c07db1df81f96351ae4de07b0101423cbc9317ccf012d
     container_name: prowlarr
     network_mode: "service:gluetun"
     environment:
