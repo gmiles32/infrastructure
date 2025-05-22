@@ -3,7 +3,7 @@ containers:
   - service_name: nextcloud
     active: true
     container_name: nextcloud
-    image: nextcloud:apache@sha256:2a11ee330bc46163192316a6335b3803b0302a0cfac16ae2437e0adfc100db32
+    image: nextcloud:apache@sha256:c1f6ea926b96fd3cf395554a22169444d66a4cc97b4fefe4f67fcf9caca72618
     user: 1000:1000
     environment:
       - POSTGRES_HOST=nextcloud-postgres
