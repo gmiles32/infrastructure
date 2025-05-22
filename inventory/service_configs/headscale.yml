@@ -65,7 +65,7 @@ containers:
 
   - service_name: headscale-ui
     active: true
-    image: ghcr.io/gurucomputing/headscale-ui:latest@sha256:f047209ddf2f71587d8a0f749b0cb92f22a3105dda624724a053c2a7aa23a210
+    image: ghcr.io/gurucomputing/headscale-ui:latest@sha256:d5c7d1522e08c04fde00108100602500cc7ed0b52d4adc3a0ef7cea4ffad3e55
     container_name: headscale-ui
     ports:
       - 9443:443
