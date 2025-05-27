@@ -2,7 +2,7 @@ compose_schema_version: '3'
 containers:
   - service_name: vaultwarden
     active: true
-    image: vaultwarden/server:1.33.2@sha256:87edb99945da91bd7504ac1435495595af2e89ad2c7adc151ae5bf091ec8baf2
+    image: vaultwarden/server:1.34.1@sha256:48267ea14d8649b2e553a5fe290c40b5dd94d54e9a24b26ae7134a75a659695f
     container_name: vaultwarden
     user: 1000:1000
     volumes:
