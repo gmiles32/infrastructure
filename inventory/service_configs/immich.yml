@@ -54,7 +54,7 @@ containers:
   - service_name: redis
     active: true
     container_name: immich-redis
-    image: redis:6.2-alpine@sha256:347c20744e594ba14dd9768363621ac3f3e26d28085dccc01fb3acf757c9b84a
+    image: redis:6.2-alpine@sha256:7fe72c486b910f6b1a9769c937dad5d63648ddee82e056f47417542dd40825bb
     restart: unless-stopped
     healthcheck:
       - name: test
