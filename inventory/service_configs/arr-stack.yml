@@ -36,7 +36,7 @@ containers:
   - service_name: qbittorrent
     active: true
     container_name: qbittorrent
-    image: lscr.io/linuxserver/qbittorrent@sha256:33a6bedcd6c17e60ae48d86af9dbc776f779be446bb42b72313e6d573c75cddb
+    image: lscr.io/linuxserver/qbittorrent@sha256:a755d9f116b787a0087fd89df77bbc485c363cb88cf0f71348e25c735e77779e
     network_mode: "service:gluetun"
     environment:
       - PUID=1000
