@@ -19,7 +19,7 @@ containers:
 
   - service_name: grafana
     active: true
-    image: grafana/grafana@sha256:1e440d21d1967dc0a78f914cff15fa5c67af0cb2bde195df442ff4f5bcc64b51
+    image: grafana/grafana@sha256:b8121de93047fd77c77de806bae9706e7d60de21c3bd5381a5db0167f94c6a48
     container_name: grafana
     user: 1000:1000
     ports:
