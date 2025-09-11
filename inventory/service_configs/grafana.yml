@@ -3,7 +3,7 @@ compose_schema_version: "3"
 containers:
   - service_name: prometheus
     active: true
-    image: prom/prometheus:v2.55.1@sha256:2659f4c2ebb718e7695cb9b25ffa7d6be64db013daba13e05c875451cf51b0d3
+    image: prom/prometheus:v3.5.0@sha256:63805ebb8d2b3920190daf1cb14a60871b16fd38bed42b857a3182bc621f4996
     container_name: prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
