@@ -33,10 +33,9 @@ ports:
   # Home Assistant
   - port_number: "8123"
     protocol: "tcp"
-  # Headscale
-  - port_number: "8080"
-    protocol: "tcp"
-  # Headscale UI
-  - port_number: "9443"
+  # Home Bridge
+  - port_number: "5353"
+    protocol: "udp"
+  - port_number: "21064"
     protocol: "tcp"
 commands: []
