@@ -2,7 +2,7 @@ compose_schema_version: '3.2'
 containers:
   - service_name: postgres
     active: true
-    image: postgres:16.10-bookworm@sha256:4f70c01cd4db87706cea6eabee1f8a93340dc493a46f6fbe206750f273d21949
+    image: postgres:16.10-bookworm@sha256:6b0b2a90764174da16e60678a4c9483fa58c7deec03b62695ce11042811efe1b
     restart: unless-stopped
     container_name: postgres
     user: 1000:1000
