@@ -35,7 +35,7 @@ containers:
 
   - service_name: node_exporter
     active: true
-    image: quay.io/prometheus/node-exporter:latest@sha256:d464a7e3af9bbd7748e6c48c5d10e646450d8aab2f4732fbac1ae54af9e87b0e
+    image: quay.io/prometheus/node-exporter:latest@sha256:337ff1d356b68d39cef853e8c6345de11ce7556bb34cda8bd205bcf2ed30b565
     container_name: node_exporter
     command:
       - '--path.rootfs=/host'
