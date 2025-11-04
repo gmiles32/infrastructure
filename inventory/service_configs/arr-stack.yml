@@ -54,7 +54,7 @@ containers:
 
   - service_name: flaresolverr
     active: true
-    image: ghcr.io/flaresolverr/flaresolverr:latest@sha256:057eedf25a22905685c55be78b2dd70bcd617a921384cd17cb3f4e8901753331
+    image: ghcr.io/flaresolverr/flaresolverr:latest@sha256:06c76759d062c185d8ac0b48f302258645b8d99db86109a3d6dce3209d93de51
     container_name: flaresolverr
     network_mode: "service:gluetun"
     environment:
