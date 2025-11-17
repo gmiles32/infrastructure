@@ -3,7 +3,7 @@ containers:
   - service_name: omada-controller
     active: true
     container_name: omada-controller
-    image: mbentley/omada-controller:5.15@sha256:a1709a44b00c012308bdfa4d4eacc9612e1647cac522033d044331a437bc5605
+    image: mbentley/omada-controller:5.15@sha256:ae62254960b46db2e5aaee2ad545b59ada0052fa0587ad8cb0d683d6487a7f9a
     restart: unless-stopped
     ulimits:
       nofile:
