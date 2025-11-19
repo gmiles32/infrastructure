@@ -24,12 +24,26 @@ interface: ens18
 # docker_compose_generator
 docker_compose_generator_output_path: /home/sysadmin/docker
 services:
-  - arr-stack
+  - omada
+
 services_config_path: ../inventory/service_configs
-nas: "10.0.50.11"
 
 # docker_start
-docker_networks: []
-ports: []
-
+docker_start_home: /home/sysadmin
+docker_networks:
+  - frontend
+  - backend
+ports:
+  # Omada
+  - port_number: "8043"
+    protocol: "tcp"
+  - port_number: "27001"
+    protocol: "tcp"
+  - port_number: "27001"
+    protocol: "udp"
+  - port_number: "29810-29814"
+    protocol: "tcp"
+  - port_number: "29810-29814"
+    protocol: "udp"  
+    
 commands: []

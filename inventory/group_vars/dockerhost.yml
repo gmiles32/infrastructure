@@ -37,7 +37,7 @@ services:
   - jellyfin
 
 services_config_path: ../inventory/service_configs
-nas: "192.168.5.11"
+nas: "10.0.10.11"
 
 # docker_start
 docker_start_home: /home/sysadmin
