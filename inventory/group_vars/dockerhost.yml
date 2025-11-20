@@ -27,7 +27,7 @@ services:
   - authelia
   - traefik
   - calibre
-  - omada
+  # - omada
   # - scrutiny
   # - stirling-pdf
   - paperless
@@ -43,8 +43,8 @@ nas: "10.0.10.11"
 docker_start_home: /home/sysadmin
 docker_start_postgres_nfs_share: /mnt/proton/containers/postgres-backups
 postgres:
-  - immich
-  - miniflux
+  # - immich
+  # - miniflux
   # - vaultwarden
 docker_networks:
   - frontend
@@ -63,16 +63,16 @@ ports:
   - port_number: "21027"
     protocol: "udp"
   # Omada
-  - port_number: "8043"
-    protocol: "tcp"
-  - port_number: "27001"
-    protocol: "tcp"
-  - port_number: "27001"
-    protocol: "udp"
-  - port_number: "29810-29814"
-    protocol: "tcp"
-  - port_number: "29810-29814"
-    protocol: "udp"  
+  # - port_number: "8043"
+  #   protocol: "tcp"
+  # - port_number: "27001"
+  #   protocol: "tcp"
+  # - port_number: "27001"
+  #   protocol: "udp"
+  # - port_number: "29810-29814"
+  #   protocol: "tcp"
+  # - port_number: "29810-29814"
+  #   protocol: "udp"  
   # Prometheus
   # - port_number: "9090"
   #   protocol: "tcp"
