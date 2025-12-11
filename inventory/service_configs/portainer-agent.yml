@@ -2,7 +2,7 @@ compose_schema_version: '3.9'
 containers:
     - service_name: agent
       active: true
-      image: 'portainer/agent:2.36.0@sha256:ab09f24d7dec425a77c0f83d483092055c464053bea42487b8ab0714039d66e3'
+      image: 'portainer/agent:2.37.0@sha256:bbe36b101908e18fec147d2fb833ea7ecfbc9021a08566c8ae0772029ca2eed8'
       volumes:
           - '/var/lib/docker/volumes:/var/lib/docker/volumes'
           - '/var/run/docker.sock:/var/run/docker.sock'
