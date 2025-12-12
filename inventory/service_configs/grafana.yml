@@ -65,7 +65,7 @@ containers:
 
   - service_name: influxdb
     active: false
-    image: influxdb:2.8.0@sha256:eb37f58646a901dc7727cf448cae36daaefaba79de33b5058dab79aa4c04aefb
+    image: influxdb:2.8.0@sha256:38829bd08b47bbfb23ee8ef98fef45ac59abb78d4d7e451870b7499840e0f365
     container_name: influxdb
     user: 1000:1000
     restart: unless-stopped
