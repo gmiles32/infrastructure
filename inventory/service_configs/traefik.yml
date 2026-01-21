@@ -40,7 +40,7 @@ containers:
 
   - service_name: traefik-certs-dumper
     active: false
-    image: ldez/traefik-certs-dumper:v2.10.0@sha256:fcf105172378d14dc93d17169adf70bf75088625c2775daa5d4ce1ff42baf258
+    image: ldez/traefik-certs-dumper:v2.11.0@sha256:67d7f7649f68efbc97a422e85a551ac063ce2146611ec2bd81c87ff35ddbd5a3
     container_name: traefik-certs-dumper
     entrypoint: sh -c '
       apk add jq
