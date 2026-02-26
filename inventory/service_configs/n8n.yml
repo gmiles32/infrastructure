@@ -36,7 +36,7 @@ containers:
 
   - service_name: postgres
     active: true 
-    image: postgres:16.12-bookworm@sha256:31424d3261c4ba75df1fca72d44f6842b66ce4ec76c1a4685f7a7219f6ec8924
+    image: postgres:16.13-bookworm@sha256:eb37f58646a901dc7727cf448cae36daaefaba79de33b5058dab79aa4c04aefb
     restart: unless-stopped
     container_name: n8n-postgres
     user: 1000:1000
