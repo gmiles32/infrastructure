@@ -2,7 +2,7 @@ compose_schema_version: "3"
 containers:
   - service_name: jellyfin
     active: true
-    image: jellyfin/jellyfin@sha256:17285f9cce63b3519ccad82b84497fc22482c20f8b8bbe0580d51fec5deaa6fd
+    image: jellyfin/jellyfin@sha256:1694ff069f0c9dafb283c36765175606866769f5d72f2ed56b6a0f1be922fc37
     env:
       - PUID=1000
       - GUID=1000
