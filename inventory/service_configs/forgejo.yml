@@ -1,7 +1,7 @@
 compose_schema_version: "3"
 containers:
   - services:
-    image: codeberg.org/forgejo/forgejo:15@sha256:e87297f8ec332240228d24f2d6f0b408e30749f4ed166c1e5cf30a2288723794
+    image: codeberg.org/forgejo/forgejo:15@sha256:bff07e43f5c84449e9dc6dca2c0a16c6f9eb285405d7f1bc631a360fd963f3fc
     active: true
     container_name: forgejo
     environment:
